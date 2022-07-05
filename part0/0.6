@@ -1,0 +1,30 @@
+note over browser:
+User add text to input 
+field and presses submit
+end note
+
+note over browser:
+event handler creates a new
+note, adds it to the notes 
+list with the command 
+notes.push(note)
+end note
+
+note over browser:
+Note list is rerendered on the page
+end note
+
+note over browser:
+new note is sent to the server.
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over server:
+server accesses data using 
+req.body field of the request 
+object req.
+server creates a new note object
+from the data and adds it to 
+the notes array
+end note
