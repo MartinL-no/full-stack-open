@@ -1,0 +1,38 @@
+note over browser:
+form submit button is pressed
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_notes
+
+note over server:
+server can access the data by accessing the req.body field of the request 
+object req.
+server creates a new note object from the data and adds it to an array 
+called notes.
+end note
+
+note over server:
+server responds with HTTP status code 302 which asks the browser to do a new
+HTTP GET request to the address defined in the header's Location 
+/exampleapp/notes
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+
+note over browser:
+browser starts executing js-code
+that requests JSON data from server 
+end note
+
+browser->server: HTTP GET  https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{content: "new_note_spa", date: "2022-07-05T11:21:05.358Z"},…]
+
+note over browser:
+browser executes the event handler
+that renders notes to display
+end note
