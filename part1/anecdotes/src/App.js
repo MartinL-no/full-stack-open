@@ -22,13 +22,13 @@ const App = () => {
     setPoints(prevState => prevState.map((anecdoteVotes, index) => ( index === selected ?
         anecdoteVotes += 1 :
         anecdoteVotes
-    ))
-    )
-    console.log(points)
+    )))
   }
+
   return (
     <div>
       {anecdotes[selected]}
+      <p>has {points[selected]} votes</p>
       <div>
         <button onClick={() => randomAnecdote()}>
           Change Anecdote
