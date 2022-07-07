@@ -11,6 +11,12 @@ const Button = (props) => {
   )
 }
 
+const StatisticLine = (props) => {
+  return (
+    <p>{props.text} {props.value}</p>
+  )
+}
+
 const Statistics = (props) => {
   const {good, neutral, bad, all, average, positive} = props
   if(!good) {
@@ -18,13 +24,12 @@ const Statistics = (props) => {
   }
   return (
     <div>
-      <h2>statistics</h2>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {all}</p>
-      <p>average {!average ? 0 : average}</p>
-      <p>positive {!positive ? 0 : positive}</p>
+      <StatisticLine text="good" value={good}/>
+      <StatisticLine text="neutral" value={neutral}/>
+      <StatisticLine text="bad" value={bad}/>
+      <StatisticLine text="all" value={all}/>
+      <StatisticLine text="average" value={average}/>
+      <StatisticLine text="positive" value={positive}/>
     </div>
   )
 }
@@ -52,6 +57,7 @@ const App = () => {
         onClick={() => setBad(bad + 1)}
         text="bad"
       />
+      <h2>statistics</h2>
       <Statistics 
         good={good}
         neutral={neutral}
