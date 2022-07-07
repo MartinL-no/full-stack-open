@@ -3,13 +3,20 @@ const Header = ({name}) => {
 }
 
 const Content = ({parts}) => {
-    return parts.map(part => (
+    const total = parts.reduce((acc, cur) => acc + cur.exercises, 0)
+
+    return (
+    <>
+        {parts.map(part => (
         <Part 
             key={part.id}
             name={part.name}
             exercises={part.exercises}
         />
-    ))
+        ))}
+        <strong>total of {total} exercises</strong>
+    </>
+    )
 }
 
 const Part = ({name, exercises}) => {
@@ -22,7 +29,6 @@ const Course = ({course}) => {
         <>
             <Header name={course.name}/>
             <Content parts={course.parts}/>
-            
         </>
     )
 }
