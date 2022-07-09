@@ -1,27 +1,72 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const CountrySummary = (props) => {
-  const countryData = props.filtered[0]
-  const languages = Object.values(countryData.languages)
+const Country = ({country}) => {
+  const [showDetails, setShowDetails] = useState(false)
+  const languages = Object.values(country.languages).map(language => (
+    <li key={language}>{language}</li>))
 
+  function handleClick() {
+    setShowDetails(!showDetails)
+  }
+
+  if  (!showDetails) {
     return (
       <>
-        <h1>{countryData.name.common}</h1>
-        <p>capital {countryData.capital}</p>
-        <p>area {countryData.area}</p>
-      
-        <strong>languages:</strong>
-  
-        <ul>
-          {languages.map(language => (
-            <li key={language}>{language}</li>))}
-        </ul>
-  
-        <img src={countryData.flags.png}/>
+        <p>{country.name.common}
+          <button
+            onClick={handleClick}
+          >show</button>
+        </p>
       </>
     )
-  console.log(test)
+  } else {
+    return (
+      <>
+        <h1>{country.name.common}
+          <button onClick={handleClick}>hide</button>
+        </h1>
+        <p>capital {country.capital}</p>
+        <p>area {country.area}</p>
+        
+        <strong>languages:</strong>
+    
+        <ul>
+          {languages}
+        </ul>
+    
+        <img src={country.flags.png}/>
+      </>
+    )
+  }
+  // const countryData = props.filtered[0]
+  // const languages = Object.values(countryData.languages)
+
+  // const showCountries = props.filtered.length === 1
+  // ? <CountrySummary filtered={filtered}/>
+  // : filtered.length > 10
+  // ? <p>Too many matches, specify annother filter</p>
+  // : filtered.map(country => (
+  //     <p key={country.name.common}>{country.name.common}</p>
+  //   ))
+
+  //   return (
+  //     <>
+  //       <h1>{countryData.name.common}</h1>
+  //       <p>capital {countryData.capital}</p>
+  //       <p>area {countryData.area}</p>
+      
+  //       <strong>languages:</strong>
+  
+  //       <ul>
+  //         {languages.map(language => (
+  //           <li key={language}>{language}</li>))}
+  //       </ul>
+  
+  //       <img src={countryData.flags.png}/>
+  //     </>
+  //   )
+  // console.log(test)
 }
 
 
@@ -43,11 +88,14 @@ const App = () => {
     setFiltered(countries.filter(country => country.name.common.toLowerCase().includes(value.toLowerCase())))
   }
 
-  const showCountries = filtered.length === 1
-    ? <CountrySummary filtered={filtered}/>
-    : filtered.length > 10
+  const searchResults = 
+    filtered.length > 10
     ? <p>Too many matches, specify annother filter</p>
-    : filtered.map(country => <p key={country.name.common}>{country.name.common}</p>)
+    : filtered.map(country => (
+      <Country 
+        key={country.name.common}
+        country={country}
+      />))
 
   return (
     <div>
@@ -56,7 +104,7 @@ const App = () => {
         value={value}
         onChange={handleChange}
       />
-      {showCountries}
+      {searchResults}
     </div>
   )
 }
