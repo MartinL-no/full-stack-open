@@ -4,8 +4,6 @@ import axios from 'axios'
 const CountrySummary = (props) => {
   const countryData = props.filtered[0]
   const languages = Object.values(countryData.languages)
-  console.log(languages)
-  console.log(countryData)
 
     return (
       <>
@@ -47,6 +45,8 @@ const App = () => {
 
   const showCountries = filtered.length === 1
     ? <CountrySummary filtered={filtered}/>
+    : filtered.length > 10
+    ? <p>Too many matches, specify annother filter</p>
     : filtered.map(country => <p key={country.name.common}>{country.name.common}</p>)
 
   return (
