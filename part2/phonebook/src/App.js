@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import personsServices from "./services/persons"
 
@@ -46,12 +45,18 @@ const PersonForm = (props) => {
 }
 
 const Persons = (props) => {
-  const {namesToShow} = props
+  const { namesToShow, handleDelete} = props
 
   return (
-    namesToShow.map((person, index) => (
-      <p key={index}>{person.name} {person.number}</p>
-    ))
+    namesToShow.map((person, index) => {
+
+      return (
+        <div key={index}>
+          <p>{person.name} {person.number}</p>
+          <button onClick={() => handleDelete(person.id)}>delete</button>
+        </div>
+      )
+    })
   )
 }
 
@@ -65,11 +70,15 @@ const App = () => {
     personsServices
       .getAll()
       .then(data => setPersons(data))
-  }, [])
+  }, [persons])
 
   const namesToShow = !filter
     ? persons
     : persons.filter(person => person.name.match(filter))
+
+    const handleFilter = (event) => {
+      setFilter(event.target.value)
+    }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -92,9 +101,18 @@ const App = () => {
       })
   }
 
-  const handleFilter = (event) => {
-    setFilter(event.target.value)
+  const handleDelete = (id) => {
+    if (window.confirm("DO you wnat to delete this entry?")) {
+      personsServices
+        .deleteItem(id)
+      personsServices
+        .getAll()
+        .then(data => setPersons(data))
+    }
+    
+
   }
+
 
   return (
     <div>
@@ -116,6 +134,7 @@ const App = () => {
       <h2>Numbers</h2>
       <Persons 
         namesToShow={namesToShow}
+        handleDelete={handleDelete}
       />
 
     </div>
