@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import personsServices from "./services/persons"
+
 const Filter = (props) => {
   const {filter, handleFilter} = props
 
@@ -60,9 +62,9 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(()=> {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(res => setPersons(res.data))
+    personsServices
+      .getAll()
+      .then(data => setPersons(data))
   }, [])
 
   const namesToShow = !filter
@@ -79,13 +81,12 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    const url = `http://localhost:3001/persons/`
     const newPerson = {name: newName, number: newNumber}
 
-    axios
-      .post(url,newPerson)
+    personsServices
+      .create(newPerson)
       .then(response => {
-        setPersons(persons.concat(response.data))
+        setPersons(persons.concat(response))
         setNewName("")
         setNewNumber("")
       })
