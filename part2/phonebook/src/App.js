@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import './index.css'
 
 import personsServices from "./services/persons"
 
@@ -60,11 +61,37 @@ const Persons = (props) => {
   )
 }
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='added'>
+      {message}
+    </div>
+  )
+}
+
+const Error = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='error'>
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(()=> {
     personsServices
@@ -104,13 +131,25 @@ const App = () => {
           setNewName("")
           setNewNumber("")
       }
-      setNewName("")
-      setNewNumber("")
+      setNotification(
+        `Added ${newName}`
+        )
+        setTimeout(() => {
+          setNotification(null)
+        }, 3000)
+        setNewName("")
+        setNewNumber("")
     } else {
       personsServices
         .create(newPerson)
         .then(response => {
           setPersons(persons.concat(response))
+          setNotification(
+            `Added ${newName}`
+            )
+            setTimeout(() => {
+              setNotification(null)
+            }, 3000)
           setNewName("")
           setNewNumber("")
         })
@@ -121,6 +160,14 @@ const App = () => {
     if (window.confirm("DO you want to delete this entry?")) {
       personsServices
         .deleteItem(id)
+        .catch(() => {
+          setError(
+            `Information of ${newName} has already been removed from server`
+            )
+            setTimeout(() => {
+              setNotification(null)
+            }, 3000)
+        })
       personsServices
         .getAll()
         .then(data => setPersons(data))
@@ -130,6 +177,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
+      <Error message={error} />
       <Filter 
         filter={filter}
         handleFilter={handleFilter}
