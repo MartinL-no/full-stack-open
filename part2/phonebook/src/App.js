@@ -89,30 +89,43 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-
+    const duplicateIndex = persons.findIndex(person => person.name.toLowerCase() === newName.toLowerCase())
     const newPerson = {name: newName, number: newNumber}
-
-    personsServices
-      .create(newPerson)
-      .then(response => {
-        setPersons(persons.concat(response))
-        setNewName("")
-        setNewNumber("")
-      })
+    
+    if(duplicateIndex !== -1) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        personsServices
+          .update(duplicateIndex + 1, newPerson)
+          .then(data => setPersons(prevState => prevState.map((person, index) => (
+            index === duplicateIndex
+            ? newPerson
+            : person
+          ))))
+          setNewName("")
+          setNewNumber("")
+      }
+      setNewName("")
+      setNewNumber("")
+    } else {
+      personsServices
+        .create(newPerson)
+        .then(response => {
+          setPersons(persons.concat(response))
+          setNewName("")
+          setNewNumber("")
+        })
+    }
   }
 
   const handleDelete = (id) => {
-    if (window.confirm("DO you wnat to delete this entry?")) {
+    if (window.confirm("DO you want to delete this entry?")) {
       personsServices
         .deleteItem(id)
       personsServices
         .getAll()
         .then(data => setPersons(data))
     }
-    
-
   }
-
 
   return (
     <div>
