@@ -50,15 +50,32 @@ app.get(`/info`, (request, response) => {
 })
 
 app.post(`/api/persons`, (request, response) => {
-    const person = request.body
-    persons = persons.concat({
-        id: Math.floor(Math.random() * 1000),
-        name: person.name,
-        number: person.number
+    const personDetails = request.body
+    const duplicate = persons.some(person => {
+        return person.name.toLowerCase() === personDetails.name.toLowerCase()
     })
 
-    response.json(person)
-    console.log(persons)
+    if (personDetails.name && personDetails.number && !duplicate) {
+        persons = persons.concat({
+            id: Math.floor(Math.random() * 1000),
+            name: personDetails.name,
+            number: personDetails.number
+        })
+        response.json(personDetails)
+        console.log(persons)
+    } else if (!personDetails.name) {
+        response.status(400).json({ 
+            error: 'name must be included' 
+        })
+    } else if (!personDetails.number) {
+        response.status(400).json({ 
+            error: 'number must be included' 
+        }) 
+    } else if (duplicate) {
+        response.status(400).json({ 
+            error: 'name must be unique' 
+        })
+    }
 })
 
 app.delete(`/api/persons/:id`, (request, response) => {
