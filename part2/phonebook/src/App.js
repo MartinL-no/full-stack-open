@@ -46,8 +46,7 @@ const PersonForm = (props) => {
 }
 
 const Persons = (props) => {
-  const { namesToShow, handleDelete, persons } = props
-  console.log(persons);
+  const { namesToShow, handleDelete } = props
 
   return (
     namesToShow.map((person) => {
