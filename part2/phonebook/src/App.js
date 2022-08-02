@@ -46,13 +46,13 @@ const PersonForm = (props) => {
 }
 
 const Persons = (props) => {
-  const { namesToShow, handleDelete} = props
+  const { namesToShow, handleDelete, persons } = props
+  console.log(persons);
 
   return (
-    namesToShow.map((person, index) => {
-
+    namesToShow.map((person) => {
       return (
-        <div key={index}>
+        <div key={person.id}>
           <p>{person.name} {person.number}</p>
           <button onClick={() => handleDelete(person.id)}>delete</button>
         </div>
@@ -92,20 +92,21 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [notification, setNotification] = useState(null)
   const [error, setError] = useState(null)
+  const [triggerRender, setTriggerRender] = useState(false)
 
   useEffect(()=> {
     personsServices
       .getAll()
       .then(data => setPersons(data))
-  }, [persons])
+  }, [triggerRender])
 
   const namesToShow = !filter
     ? persons
     : persons.filter(person => person.name.match(filter))
 
-    const handleFilter = (event) => {
-      setFilter(event.target.value)
-    }
+  const handleFilter = (event) => {
+    setFilter(event.target.value)
+  }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -157,7 +158,7 @@ const App = () => {
   }
 
   const handleDelete = (id) => {
-    if (window.confirm("DO you want to delete this entry?")) {
+    if (window.confirm("Do you want to delete this entry?")) {
       personsServices
         .deleteItem(id)
         .catch(() => {
@@ -169,8 +170,9 @@ const App = () => {
             }, 3000)
         })
       personsServices
-        .getAll()
-        .then(data => setPersons(data))
+      .getAll()
+      .then(data => setPersons(data))
+      setTriggerRender(!triggerRender)
     }
   }
 
@@ -197,6 +199,7 @@ const App = () => {
       <Persons 
         namesToShow={namesToShow}
         handleDelete={handleDelete}
+        persons={persons}
       />
 
     </div>
