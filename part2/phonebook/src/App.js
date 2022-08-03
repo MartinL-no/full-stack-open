@@ -116,18 +116,27 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const duplicateIndex = persons.findIndex(person => person.name.toLowerCase() === newName.toLowerCase())
-    const newPerson = {name: newName, number: newNumber}
+    const duplicate = persons.filter(person => person.name.toLowerCase() === newName.toLowerCase())
     
-    if(duplicateIndex !== -1) {
+    const newPerson = {
+      id: duplicate[0].id,
+      name: newName,
+      number: newNumber
+    }
+    
+    if(newPerson.id) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         personsServices
-          .update(duplicateIndex + 1, newPerson)
-          .then(data => setPersons(prevState => prevState.map((person, index) => (
-            index === duplicateIndex
-            ? newPerson
-            : person
-          ))))
+          .update(newPerson.id, newPerson)
+          .then(data => {
+            setPersons(prevState => (
+              prevState.map(person => (
+                person.id === data.id
+                ? data
+                : person
+              ))
+            ))
+          })
           setNewName("")
           setNewNumber("")
       }
