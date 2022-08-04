@@ -118,13 +118,12 @@ const App = () => {
     event.preventDefault()
     const duplicate = persons.filter(person => person.name.toLowerCase() === newName.toLowerCase())
     
-    const newPerson = {
-      id: duplicate[0].id,
-      name: newName,
-      number: newNumber
-    }
-    
-    if(newPerson.id) {
+    if(duplicate[0]) {
+      const newPerson = {
+        id: duplicate[0].id,
+        name: newName,
+        number: newNumber
+      }
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         personsServices
           .update(newPerson.id, newPerson)
@@ -149,6 +148,10 @@ const App = () => {
         setNewName("")
         setNewNumber("")
     } else {
+      const newPerson = {
+        name: newName,
+        number: newNumber
+      }
       personsServices
         .create(newPerson)
         .then(response => {
@@ -159,9 +162,18 @@ const App = () => {
             setTimeout(() => {
               setNotification(null)
             }, 3000)
-          setNewName("")
-          setNewNumber("")
-        })
+          })
+        .catch(error => {
+          setError(
+            error.response.data.error
+            )
+            setTimeout(() => {
+              setError(null)
+            }, 3000)
+          console.log(error.response.data.error)
+      })
+      setNewName("")
+      setNewNumber("")
     }
   }
 
