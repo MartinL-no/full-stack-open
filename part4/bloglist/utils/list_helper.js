@@ -9,7 +9,6 @@ const totalLikes = (blogs) => {
 
 const favoriteBlog = (blogs) => {
   const result = blogs.sort((a, b) => a.likes - b.likes).slice(-1)[0] 
-  console.log('result', result)
   return result
 }
 
