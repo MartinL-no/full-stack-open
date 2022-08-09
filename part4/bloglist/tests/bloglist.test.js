@@ -24,3 +24,32 @@ describe('total likes', () => {
     expect(result).toBe(5)
   })
 })
+
+describe('most likes', () => {
+  const blogArray = [
+    {
+      title:  "string reduction",
+      author: " Dijkstra",
+      likes: 12
+    },
+    {
+      title: "Canonisdasdsadasdcal string reduction",
+      author: "Edssdasdsadsdsassssger W. Dijkstra",
+      likes: 29
+    },
+    {
+      title: "Canonicawqwqwq  qwq wl string reduction",
+      author: "Edsgeqqqqqqqqqqqqqr Wq. Dijkstra",
+      likes: 9
+    }
+  ]
+
+  test('find blog with highest amount of likes, then return it', () => {
+    const result = listHelper.favoriteBlog(blogArray)
+    expect(result).toEqual({
+      title: "Canonisdasdsadasdcal string reduction",
+      author: "Edssdasdsadsdsassssger W. Dijkstra",
+      likes: 29
+    })
+  })
+})
