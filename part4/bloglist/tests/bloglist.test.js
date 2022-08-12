@@ -53,3 +53,28 @@ describe('most likes', () => {
     })
   })
 })
+
+describe('mostBlogs', () => {
+  const authors = [
+    {
+      author: "Martin",
+      blogs: 12
+    },
+    {
+      author: "Jimbo",
+      blogs: 299
+    },
+    {
+      author: "Dijkstra",
+      blogs: 29
+    }
+  ]
+
+  test('return name of author and amount of blogs for entry with the largest amount of blogs', () => {
+    const result = listHelper.mostBlogs(authors)
+    expect(result).toEqual({
+      author: "Jimbo",
+      blogs: 299
+    })
+  })
+})
