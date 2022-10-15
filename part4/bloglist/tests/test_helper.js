@@ -8,19 +8,19 @@ const initialBlogs = [
     likes: 10
   },
   {
-    title: 'HTML is easy',
+    title: 'Eat the apple',
     author: 'Piffle',
     url: 'http://www.nintendo.com',
     likes: 16540
   }
 ]
 
-const blogsinDb = async () => {
+const blogsInDb = async () => {
   const blogs = await Blog.find({})
-  return blogs.map(note => blogs.toJSON())
+  return blogs.map(blog => blog.toJSON())
 }
 
 module.exports = {
   initialBlogs,
-  blogsinDb
+  blogsInDb
 }
