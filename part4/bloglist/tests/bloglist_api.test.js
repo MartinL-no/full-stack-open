@@ -4,7 +4,7 @@ const helper = require('./test_helper');
 const app = require('../app')
 const api = supertest(app)
 
-const Blog = require ('../models/blog')
+const Blog = require ('../models/blog');
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -72,8 +72,44 @@ test('if likes property is missing from request it defaults to zero', async () =
   
   const blogsAtEnd = await helper.blogsInDb()
   const newBlogLikes = blogsAtEnd[blogsAtEnd.length - 1].likes
-  
+
   expect(newBlogLikes).toBe(0)
+})
+
+describe('if field is missing return from the request data, the status code 400 is returned', () => {
+  test('title missing', async () => {
+    const newBlog = {
+      author: 'JooJoo',
+      url: 'http://www.bumbledumble.com',
+      likes: 10
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+
+  test('url missing', async () => {
+    const newBlog = {
+      title: 'Blahdy blah blah blog post',
+      author: 'JooJoo',
+      likes: 10
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
 })
 
 afterAll(() => {
