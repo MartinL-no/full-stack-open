@@ -19,9 +19,15 @@ const mostBlogs = (authors) => {
   return _.last(sorted)
 }
 
+const mostLikes = (blogs) => {
+  const sorted = blogs.sort((a, b) => a.likes - b.likes)
+  return _.last(sorted)
+}
+
 module.exports = {
-  mostBlogs,
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs,
+  mostLikes
 }
