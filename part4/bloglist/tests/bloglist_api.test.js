@@ -5,7 +5,7 @@ const app = require('../app')
 const api = supertest(app)
 const bcrypt = require('bcrypt')
 
-const User = require('../models/user')
+const User = require('../models/users')
 const Blog = require('../models/blog')
 
 beforeEach(async () => {
