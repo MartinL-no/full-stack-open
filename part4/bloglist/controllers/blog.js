@@ -1,6 +1,7 @@
 const blogRouter = require('express').Router()
 const { notEqual } = require('assert')
 const Blog = require('../models/blog')
+const { blogsInDb } = require('../tests/test_helper')
 
 blogRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
@@ -33,6 +34,23 @@ blogRouter.delete('/:id', async (request, response, next) => {
   } catch(exception) {
     next(exception)
   }
+})
+
+blogRouter.put('/:id', async (request, response, next) => {
+  const body = request.body
+
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes
+  }
+
+  Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    .then(updatedBlog => {
+      response.json(updatedBlog)
+    })
+    .catch(error => next(error))
 })
 
 module.exports = blogRouter
