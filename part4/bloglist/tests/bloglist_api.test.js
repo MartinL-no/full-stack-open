@@ -6,7 +6,7 @@ const api = supertest(app)
 const bcrypt = require('bcrypt')
 
 const User = require('../models/user')
-const Blog = require ('../models/blog')
+const Blog = require('../models/blog')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -36,8 +36,6 @@ describe('when there is initially some blog posts saved', () => {
   
     expect(response.body[0].id).toBeDefined()
   })
-
-
 })
 
 describe('addition of a new blog post', () => {
@@ -175,23 +173,23 @@ describe('deletion of a blog post', () => {
   })
 })
 
+beforeEach(async () => {
+  await User.deleteMany({})
+
+  const passwordHash = await bcrypt.hash('sekret', 10)
+  const user = new User({ username: 'root', passwordHash })
+
+  await user.save()
+})
+
 describe('when there is initially one user in db', () => {
-  beforeEach(async () => {
-    await User.deleteMany({})
-
-    const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', passwordHash })
-
-    await user.save()
-  })
-
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
-      username: 'mluukkai',
-      name: 'Matti Luukkainen',
-      password: 'salainen',
+      username: 'testUser',
+      name: 'Test User',
+      password: 'testUserPassword',
     }
 
     await api
@@ -205,6 +203,62 @@ describe('when there is initially one user in db', () => {
 
     const usernames = usersAtEnd.map(u => u.username)
     expect(usernames).toContain(newUser.username)
+  })
+})
+
+describe('addition of a new user', () => {
+  test('fails with status code 400 if username is not unique', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'root',
+      name: 'Duplicate User',
+      password: 'password'
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400, { error: 'username must be unique' })
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+
+  test('fails with status code 400 if password is less than three characters', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'testUser',
+      name: 'Test User',
+      password: '',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400, { error: 'password must be longer than three characters' })
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+
+  test('fails with status code 400 if username is less than three characters', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: '',
+      name: 'Test User',
+      password: 'password',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400, { error: 'username must be longer than three characters' })
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
 })
 
