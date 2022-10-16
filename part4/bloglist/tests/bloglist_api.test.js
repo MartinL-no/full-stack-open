@@ -15,7 +15,7 @@ beforeEach(async () => {
   }
 })
 
-test('notes are returned as json', async () => {
+test('blogs are returned as json', async () => {
   await api
     .get('/api/blogs')
     .expect(200)
@@ -109,6 +109,25 @@ describe('if field is missing return from the request data, the status code 400 
     const blogsAtEnd = await helper.blogsInDb()
 
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+})
+
+describe('Deletion of a blog post', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length -1)
+
+    const contents = blogsAtEnd.map(blog => blog.title)
+
+    expect(contents).not.toContain(blogToDelete.title)
   })
 })
 
