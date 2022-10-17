@@ -41,8 +41,19 @@ blogRouter.post('/', async (request, response, next) => {
 
 blogRouter.delete('/:id', async (request, response, next) => {
   try {
-    await Blog.findByIdAndRemove(request.params.id)
-    response.status(204).end()
+    const blog = await Blog.findById(request.params.id)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const userId = decodedToken.id
+
+    if (blog == null) {
+      return response.status(400).json({ error: 'the blog post does not exist' })
+    } else if (blog.user.toString() !== userId) {
+      return response.status(401).json({ error: 'user does not have authority to delete this blog post' })
+    } else if (blog.user.toString() === userId) {
+      await Blog.findByIdAndRemove(blog.id)
+      response.status(204).end()
+    }
+
   } catch(exception) {
     next(exception)
   }
