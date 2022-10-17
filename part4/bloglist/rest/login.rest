@@ -1,3 +1,14 @@
+### Create new user
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "root",
+  "name": "Superuser",
+  "password": "salainen"
+}
+
+
 ### Successful Login
 POST http://localhost:3001/api/login
 Content-Type: application/json
@@ -5,6 +16,16 @@ Content-Type: application/json
 {
   "username": "root",
   "password": "salainen"
+}
+
+### Create alternate user
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "testUser",
+  "name": "Test User",
+  "password": "testPassword"
 }
 
 ### Alternate Login
@@ -20,20 +41,10 @@ Content-Type: application/json
 GET http://localhost:3001/api/users
 Content-Type: application/json
 
-### Create new user
-POST http://localhost:3001/api/users
-Content-Type: application/json
-
-{
-  "username": "testUser",
-  "name": "Test User",
-  "password": "testPassword"
-}
-
 ### Create new note by logged in user
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYzNGMyMGYyNmZlMTkyYTI5MzM1OTc5NCIsImlhdCI6MTY2NTk1MzIzM30.AvbeglTS-_jU5xdda4d_FnkE8itU6nQImjILcr8lybM
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYzNGQ2YjRkOGFkMGZiYTNmNGQ4YmNmNiIsImlhdCI6MTY2NjAxODIwMH0.QAmk2Hn4G5G9ZrsIjBm0Tc8NAvbqfBVIdB0K4He_QtA
 
 {
   "title": "Create new note by logged in user",
@@ -43,11 +54,11 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb
 }
 
 ### Delete note by correct user
-DELETE  http://localhost:3001/api/blogs/634c3ae0fb1252354d26ca34
+DELETE  http://localhost:3001/api/blogs/634c75de5fad73a170b57f55
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYzNGMyMGYyNmZlMTkyYTI5MzM1OTc5NCIsImlhdCI6MTY2NTk1MzIzM30.AvbeglTS-_jU5xdda4d_FnkE8itU6nQImjILcr8lybM
 
 ### Delete note by incorrect user
-DELETE  http://localhost:3001/api/blogs/634c3ae0fb1252354d26ca34
+DELETE  http://localhost:3001/api/blogs/634c75de5fad73a170b57f55
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RVc2VyIiwiaWQiOiI2MzRkNTRhMDY4ODQ1YWNkMGZlMmZiMDkiLCJpYXQiOjE2NjYwMTI1MDB9.SyktkbdBNrAkBQ2qivhVVnrrVFfv5awPLcn6yyZrW9E
