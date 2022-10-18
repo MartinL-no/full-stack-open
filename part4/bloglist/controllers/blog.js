@@ -1,4 +1,5 @@
 const blogRouter = require('express').Router()
+const { userExtractor } = require('../utils/middleware')
 const jwt = require('jsonwebtoken')
 
 const Blog = require('../models/blog')
@@ -10,7 +11,7 @@ blogRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-blogRouter.post('/', async (request, response, next) => {
+blogRouter.post('/', userExtractor, async (request, response, next) => {
   try {
   const body = request.body
   const user = request.user
@@ -24,6 +25,7 @@ blogRouter.post('/', async (request, response, next) => {
     })
 
     const savedBlog = await blog.save()
+
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
 
@@ -33,20 +35,16 @@ blogRouter.post('/', async (request, response, next) => {
   }
 })
 
-blogRouter.delete('/:id', async (request, response, next) => {
+blogRouter.delete('/:id', userExtractor, async (request, response, next) => {
   try {
     const blog = await Blog.findById(request.params.id)
     const user = request.user
 
-    console.log(user)
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    const userId = decodedToken.id
-
     if (blog == null) {
       return response.status(400).json({ error: 'the blog post does not exist' })
-    } else if (blog.user.toString() !== userId) {
+    } else if (blog.user.toString() !== user._id.toString()) {
       return response.status(401).json({ error: 'user does not have authority to delete this blog post' })
-    } else if (blog.user.toString() === userId) {
+    } else if (blog.user.toString() === user._id.toString()) {
       await Blog.findByIdAndRemove(blog.id)
       response.status(204).end()
     }

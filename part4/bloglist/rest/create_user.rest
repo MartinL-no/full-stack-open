@@ -1,17 +1,20 @@
-### Successful Login
-POST http://localhost:3001/api/login
+### Create new user
+POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
   "username": "root",
+  "name": "Superuser",
   "password": "salainen"
 }
 
-### Alternate Login
-POST http://localhost:3001/api/login
+
+### Create alternate user
+POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
   "username": "testUser",
+  "name": "Test User",
   "password": "testPassword"
 }
