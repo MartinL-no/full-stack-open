@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import './index.css'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -12,6 +13,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -44,10 +46,10 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setNotification('Wrong username or password')
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        setNotification(null)
+      }, 3000)
     }
   }
 
@@ -63,73 +65,100 @@ const App = () => {
       const newBlog = await blogService.create({
         title, url, author
       })
-      console.log(newBlog)
-      console.log(blogs)
+
       setBlogs([...blogs, newBlog])
-      
-    } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+
+      setNotification(`a new blog ${title} by ${author} added`)
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        setNotification(null)
+      }, 3000)
+    } catch (exception) {
+        console.log(exception)
     }
   }
 
+  const Notification = ({ message, classN }) => {
+    if (message === null) {
+      return null
+    }
+  
+    return (
+      <div className={classN}>
+        {message}
+      </div>
+    )
+  }
+
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>      
+    <>
+      <Notification 
+        message={notification}
+        classN='error'
+      />
+      <form onSubmit={handleLogin}>
+        <div>
+          username
+            <input
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+          password
+            <input
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>      
+    </>
   )
 
   const createNewForm = () => (
-    <form onSubmit={handleCreateNew}>
-      <div>
-        title
-          <input
-          type="text"
-          value={title}
-          name="Title"
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </div>
-      <div>
-        author
-          <input
-          type="text"
-          value={author}
-          name="Author"
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-        url
-          <input
-          type="text"
-          value={url}
-          name="Url"
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button type="submit">create</button>
-    </form>
+    <>
+      <Notification 
+        message={notification}
+        classN='added'
+      />
+      <form onSubmit={handleCreateNew}>
+        <div>
+          title
+            <input
+            type="text"
+            value={title}
+            name="Title"
+            onChange={({ target }) => setTitle(target.value)}
+          />
+        </div>
+        <div>
+          author
+            <input
+            type="text"
+            value={author}
+            name="Author"
+            onChange={({ target }) => setAuthor(target.value)}
+          />
+        </div>
+        <div>
+          url
+            <input
+            type="text"
+            value={url}
+            name="Url"
+            onChange={({ target }) => setUrl(target.value)}
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
+    </>
   )
 
   if (user === null) {
