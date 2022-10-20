@@ -76,9 +76,26 @@ const App = () => {
     }
   }
 
+  const addLike = async (blogObject) => {
+    try {
+      blogService
+        .replace(blogObject)
+        .then(returnedBlog => {
+          if (returnedBlog.id === blogObject.id) {
+            setBlogs(blogs.map(blog => blog.id === blogObject.id ? { ...blog, likes: blog.likes + 1 } : blog))
+          }
+        })
+    } catch (exception) {
+      console.log(exception)
+    }
+  }
+
   const blogForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
-      <BlogForm createBlog={addBlog} />
+      <BlogForm
+        createBlog={addBlog}
+        addLike={addLike}
+      />
     </Togglable>
   )
 
@@ -124,7 +141,7 @@ const App = () => {
       />
       {blogForm()}
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} addLike={addLike}/>
       )}
     </div>
   )
