@@ -99,6 +99,14 @@ const App = () => {
     </Togglable>
   )
 
+  const blogElements = () => {
+    const sortedBlog = blogs.sort((a, b) => b.likes - a.likes)
+
+    return sortedBlog.map(blog =>
+      <Blog key={blog.id} blog={blog} addLike={addLike}/>
+    )
+  }
+
   const Notification = ({ message, classN }) => {
     if (message === null) {
       return null
@@ -140,9 +148,7 @@ const App = () => {
         classNa='added'
       />
       {blogForm()}
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} addLike={addLike}/>
-      )}
+      {blogElements()}
     </div>
   )
 }
