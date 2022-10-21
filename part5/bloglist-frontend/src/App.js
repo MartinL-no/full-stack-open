@@ -76,13 +76,27 @@ const App = () => {
     }
   }
 
-  const addLike = async (blogObject) => {
+  const addLike = (blogObject) => {
     try {
       blogService
         .replace(blogObject)
         .then(returnedBlog => {
           if (returnedBlog.id === blogObject.id) {
             setBlogs(blogs.map(blog => blog.id === blogObject.id ? { ...blog, likes: blog.likes + 1 } : blog))
+          }
+        })
+    } catch (exception) {
+      console.log(exception)
+    }
+  }
+
+  const removeBlog = (blogObject) => {
+    try {
+      blogService
+        .remove(blogObject.id)
+        .then(status => {
+          if (status === 204) {
+            setBlogs(blogs.filter(blog => blog.id !== blogObject.id))
           }
         })
     } catch (exception) {
@@ -103,7 +117,13 @@ const App = () => {
     const sortedBlog = blogs.sort((a, b) => b.likes - a.likes)
 
     return sortedBlog.map(blog =>
-      <Blog key={blog.id} blog={blog} addLike={addLike}/>
+      <Blog 
+        key={blog.id}
+        blog={blog}
+        addLike={addLike}
+        removeBlog={removeBlog}
+        username={user.username}
+      />
     )
   }
 
@@ -145,7 +165,7 @@ const App = () => {
       <h2>create new</h2>
       <Notification 
         message={notification}
-        classNa='added'
+        classN='added'
       />
       {blogForm()}
       {blogElements()}
