@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const Blog = ({ blog, addLike, removeBlog, username }) => {
   const [detailsAreShown, setDetailAreShown] = useState(false)
@@ -36,13 +36,13 @@ const Blog = ({ blog, addLike, removeBlog, username }) => {
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title} 
+        {blog.title}
         {`${blog.author} `}
         <button onClick={handleToggleDetails}>view</button>
 
       </div>
       {detailsAreShown && details()}
-    </div>  
+    </div>
   )
 }
 

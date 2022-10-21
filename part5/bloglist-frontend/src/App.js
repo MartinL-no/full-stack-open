@@ -9,7 +9,7 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
@@ -18,7 +18,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const App = () => {
         setNotification(null)
       }, 3000)
     } catch (exception) {
-        console.log(exception)
+      console.log(exception)
     }
   }
 
@@ -117,7 +117,7 @@ const App = () => {
     const sortedBlog = blogs.sort((a, b) => b.likes - a.likes)
 
     return sortedBlog.map(blog =>
-      <Blog 
+      <Blog
         key={blog.id}
         blog={blog}
         addLike={addLike}
@@ -143,7 +143,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
-        <Notification 
+        <Notification
           message={notification}
           classN='error'
         />
@@ -163,7 +163,7 @@ const App = () => {
       <h2>blogs</h2>
       <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
       <h2>create new</h2>
-      <Notification 
+      <Notification
         message={notification}
         classN='added'
       />
