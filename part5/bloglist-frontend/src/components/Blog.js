@@ -34,13 +34,11 @@ const Blog = ({ blog, addLike, removeBlog, username }) => {
   )
 
   return (
-    <div style={blogStyle}>
-      <div className='blog'>
-        {blog.title}
-        {`${blog.author} `}
-        <button onClick={handleToggleDetails}>view</button>
-        {detailsAreShown && details()}
-      </div>
+    <div className='blog' style={blogStyle}>
+      {blog.title}
+      {`${blog.author} `}
+      <button onClick={handleToggleDetails}>view</button>
+      {detailsAreShown && details()}
     </div>
   )
 }

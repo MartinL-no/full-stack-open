@@ -38,6 +38,21 @@ describe('Blog app', function() {
       cy.get('html').should('not.contain', 'Superuser logged in')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'root', password: 'salainen' })
+    })
+
+    it('A blog can be created', function() {
+      cy.get('#new-blog-button').click()
+      cy.get('#title-input').type('a note created by cypress')
+      cy.get('#author-input').type('test author')
+      cy.get('#url-input').type('www.test.com')
+      cy.get('#create-blog-button').click()
+      cy.get('.blogs').contains('a note created by cypress')
+    })
+  })
 })
 
 // describe('Note app', function() {
