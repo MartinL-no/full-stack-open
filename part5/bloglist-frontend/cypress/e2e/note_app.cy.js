@@ -53,17 +53,41 @@ describe('Blog app', function() {
       cy.get('.blogs').contains('a note created by cypress')
     })
 
-    describe('and a blog exists', function () {
+    describe('and blogs exists', function () {
       beforeEach(function () {
         cy.createBlog({ title: 'first blog', author: 'first author', url: 'www.first-blog.com' })
         cy.createBlog({ title: 'second blog', author: 'second author', url: 'www.second-blog.com' })
         cy.createBlog({ title: 'third blog', author: 'third author', url: 'www.third-blog.com' })
       })
 
-      it.only('a blog can be liked', function() {
+      it('a blog can be liked', function() {
         cy.contains('first blog').parent().find('button').click()
         cy.contains('like').click()
         cy.contains('first blog').parent().contains('1')
+      })
+
+      it('a blog can be deleted', function() {
+        cy.contains('first blog').parent().find('button').click()
+        cy.contains('remove').click()
+        cy.get('html').should('not.contain', 'first blog')
+      })
+
+      it.only('the blogs are sorted by most likes', function() {
+        cy.contains('third blog').parent().find('button').click()
+        cy.contains('like').click()
+        cy.contains('third blog').parent().contains('1')
+        cy.contains('like').click()
+        cy.contains('third blog').parent().contains('2')
+        cy.contains('third blog').parent().find('button:first').click()
+
+        cy.contains('second blog').parent().find('button').click()
+        cy.contains('like').click()
+        cy.contains('second blog').parent().contains('1')
+        cy.contains('second blog').parent().find('button:first').click()
+
+        cy.get('.blog').eq(0).should('contain', 'third blog')
+        cy.get('.blog').eq(1).should('contain', 'second blog')
+        cy.get('.blog').eq(2).should('contain', 'first blog')
       })
     })
   })
