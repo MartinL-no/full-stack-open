@@ -47,7 +47,7 @@ export const storeVote = (id) => {
   }
 }
 
-export const storeAddVote = (anecdote) => {
+export const storeAddAnecdote = (anecdote) => {
   return {
     type: 'ADD',
     data: { anecdote }
