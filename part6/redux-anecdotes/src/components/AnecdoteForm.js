@@ -9,7 +9,7 @@ const AnecdoteForm = () => {
     event.target.anecdote.value = ''
 
     dispatch({ type: 'anecdotes/storeAddAnecdote', payload: content })
-    dispatch({ type: 'notification/showNotification', payload: content })
+    dispatch({ type: 'notification/showNotification', payload: { content: content, message: 'added'} })
     setTimeout(() => {
       dispatch({ type: 'notification/hideNotification', payload: null })
     }, "5000")
