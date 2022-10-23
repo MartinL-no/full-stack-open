@@ -5,10 +5,14 @@ const AnecdoteForm = () => {
 
   const addAnecdote = (event) => {
     event.preventDefault()
-    const anecdote = event.target.anecdote.value
+    const content = event.target.anecdote.value
     event.target.anecdote.value = ''
 
-    dispatch({ type: 'anecdotes/storeAddAnecdote', payload: anecdote })
+    dispatch({ type: 'anecdotes/storeAddAnecdote', payload: content })
+    dispatch({ type: 'notification/showNotification', payload: content })
+    setTimeout(() => {
+      dispatch({ type: 'notification/hideNotification', payload: null })
+    }, "5000")
   }
   return (
     <>

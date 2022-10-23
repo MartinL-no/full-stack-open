@@ -33,10 +33,9 @@ const anecdotesSlice = createSlice({
       return state.map(anecdote => anecdote.id === id ? updatedAnecdote : anecdote)
     },
     storeAddAnecdote(state, action) {
-      const anecdote = action.payload
-      const anecdoteObject = asObject(anecdote)
+      const content = action.payload
+      const anecdoteObject = asObject(content)
       
-      console.log('anecdoteObject', anecdoteObject)
       return state.concat(anecdoteObject)  
     }
   }
