@@ -8,8 +8,8 @@ const filterSlice = createSlice({
       const input = action.payload.input.toLowerCase()
       const anecdotes = action.payload.anecdotes
       const filteredAnecdotes = anecdotes.filter(anecdote => {
-        const content = anecdote.content.toLowerCase()
-        return content.includes(input)
+      const content = anecdote.content.toLowerCase()
+      return content.includes(input)
       })
       const filteredAnecdotesIds = filteredAnecdotes.map(anecdote => anecdote.id)
 
@@ -18,4 +18,5 @@ const filterSlice = createSlice({
   }
 })
 
+export const { filterAnecdotes } = filterSlice.actions
 export default filterSlice.reducer
