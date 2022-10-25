@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import { showNotification, hideNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
@@ -10,12 +10,9 @@ const AnecdoteForm = () => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    dispatch(createAnecdote(content))
 
-    dispatch(showNotification({ content: content, message: 'added'}))
-    setTimeout(() => {
-      dispatch(hideNotification(null))
-    }, "5000")
+    dispatch(createAnecdote(content))
+    dispatch(setNotification(`you voted '${content}'`, 10))
   }
   return (
     <>
