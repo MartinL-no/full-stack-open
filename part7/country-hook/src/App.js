@@ -22,7 +22,6 @@ const useCountry = (name) => {
       axios
         .get(`https://restcountries.com/v3.1/name/${name}?fullText=true`)
         .then(response => {
-          console.log(response.data)
           setCountry(response.data[0])
         })
         .catch(function (error) {
