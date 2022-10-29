@@ -62,6 +62,7 @@ const CreateNew = (props) => {
   const info = useField('text')
 
   const handleSubmit = (e) => {
+    console.log('triggered')
     e.preventDefault()
     props.addNew({
       content: content.value,
@@ -70,6 +71,13 @@ const CreateNew = (props) => {
       votes: 0
     })
     navigate('/')
+  }
+
+  const handleReset = (e) => {
+    e.preventDefault()
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
@@ -89,6 +97,7 @@ const CreateNew = (props) => {
           <input { ...info } />
         </div>
         <button>create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   )
