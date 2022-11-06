@@ -1,0 +1,9 @@
+# Ignore artifacts:
+build
+coverage
+
+node_modules
+npm-debug.log
+.nyc
+.env
+.DS_Store
