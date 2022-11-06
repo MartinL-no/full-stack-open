@@ -1,9 +1,13 @@
 import { useState, useEffect, useRef } from "react";
+import { useDispatch } from 'react-redux'
+import { createNotification } from "./reducers/notificationReducer";
+
 import "./index.css";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
+import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -12,8 +16,9 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null);
   const blogFormRef = useRef();
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -43,10 +48,7 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      setNotification("Wrong username or password");
-      setTimeout(() => {
-        setNotification(null);
-      }, 3000);
+      dispatch(createNotification("Wrong username or password", 5));
     }
   };
 
@@ -62,12 +64,7 @@ const App = () => {
       blogService.create(blogObject).then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog));
       });
-      setNotification(
-        `a new blog ${blogObject.title} by ${blogObject.author} added`
-      );
-      setTimeout(() => {
-        setNotification(null);
-      }, 3000);
+      dispatch(createNotification( `a new blog ${blogObject.title} by ${blogObject.author} added`, 5));
     } catch (exception) {
       console.log(exception);
     }
@@ -127,19 +124,11 @@ const App = () => {
     );
   };
 
-  const Notification = ({ message, classN }) => {
-    if (message === null) {
-      return null;
-    }
-
-    return <div className={classN}>{message}</div>;
-  };
-
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
-        <Notification message={notification} classN="error" />
+        <Notification />
         <LoginForm
           username={username}
           password={password}
@@ -158,7 +147,7 @@ const App = () => {
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
       <h2>create new</h2>
-      <Notification message={notification} classN="added" />
+      <Notification />
       {blogForm()}
       {blogElements()}
     </div>
