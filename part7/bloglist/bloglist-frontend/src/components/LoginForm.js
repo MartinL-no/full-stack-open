@@ -1,12 +1,25 @@
-import PropTypes from "prop-types";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
-const LoginForm = ({
-  handleSubmit,
-  handleUsernameChange,
-  handlePasswordChange,
-  username,
-  password,
-}) => {
+import { login } from "../reducers/loginReducer";
+import { createNotification } from "../reducers/notificationReducer";
+
+const LoginForm = () => {
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      dispatch(login(username, password))
+      setUsername("");
+      setPassword("");
+    } catch (exception) {
+      dispatch(createNotification("Wrong username or password", 5));
+    }
+  };
+
   return (
     <div>
       <h2>Login</h2>
@@ -19,7 +32,7 @@ const LoginForm = ({
             type="text"
             value={username}
             name="Username"
-            onChange={handleUsernameChange}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <div>
@@ -29,7 +42,7 @@ const LoginForm = ({
             type="password"
             value={password}
             name="Password"
-            onChange={handlePasswordChange}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <button type="submit" id="login-button">
@@ -38,14 +51,6 @@ const LoginForm = ({
       </form>
     </div>
   );
-};
-
-LoginForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleUsernameChange: PropTypes.func.isRequired,
-  handlePasswordChange: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
 };
 
 export default LoginForm;

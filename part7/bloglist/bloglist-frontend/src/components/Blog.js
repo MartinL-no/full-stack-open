@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useDispatch } from 'react-redux'
+import { likeBlog, removeBlog } from "../reducers/blogReducer";
 
-const Blog = ({ blog, addLike, removeBlog, username }) => {
+const Blog = ({ blog, username }) => {
+  const dispatch = useDispatch();
   const [detailsAreShown, setDetailAreShown] = useState(false);
   const blogStyle = {
     paddingTop: 10,
@@ -15,12 +18,12 @@ const Blog = ({ blog, addLike, removeBlog, username }) => {
   };
 
   const handleAddLike = () => {
-    addLike(blog);
+    dispatch(likeBlog(blog))
   };
 
   const handleRemoveBlog = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      removeBlog(blog);
+      dispatch(removeBlog(blog.id))
     }
   };
 
@@ -32,7 +35,7 @@ const Blog = ({ blog, addLike, removeBlog, username }) => {
         <button onClick={handleAddLike}>like</button>
       </p>
       <p>{blog.user.name}</p>
-      {username === blog.user.username && (
+      {username.user === blog.user.username && (
         <button onClick={handleRemoveBlog}>remove</button>
       )}
     </>
