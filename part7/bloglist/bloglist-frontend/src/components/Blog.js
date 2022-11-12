@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, removeBlog } from "../reducers/blogReducer";
 
-const Blog = ({ blog, username }) => {
+const Blog = ({ blog }) => {
   const dispatch = useDispatch();
+  const username = useSelector(state => state.login.username);
   const [detailsAreShown, setDetailAreShown] = useState(false);
   const blogStyle = {
     paddingTop: 10,

@@ -1,16 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react';
-
-import { initializeBlogs } from '../reducers/blogReducer';
+import { useSelector } from 'react-redux'
 import Blog from "./Blog";
 
-const BlogList = (username) => {
-  const dispatch = useDispatch();
+const BlogList = () => {
   const blogs = useSelector(state => [...state.blog].sort((a, b) => b.likes - a.likes))
-
-  useEffect(() => {
-    dispatch(initializeBlogs())
-  }, [blogs]);
 
   return (
     <div className="blogs">
@@ -18,7 +10,6 @@ const BlogList = (username) => {
         <Blog
           key={blog.id}
           blog={blog}
-          username={username}
         />
       ))}
     </div>
