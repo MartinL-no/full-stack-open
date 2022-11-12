@@ -4,11 +4,12 @@ import { Routes, Route } from "react-router-dom"
 import "./index.css";
 
 import { initializeBlogs } from "./reducers/blogReducer";
-import { getLogin, logout } from "./reducers/loginReducer";
+import { getLogin } from "./reducers/loginReducer";
 import Blogs from "./pages/Blogs"
 import Blog from "./pages/Blog";
 import Users from "./pages/Users";
 import User from "./pages/User";
+import Navbar from "./components/Navbar";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 
@@ -24,11 +25,6 @@ const App = () => {
     dispatch(initializeBlogs())
   }, []);
 
-
-  const handleLogout = () => {
-    dispatch(logout(null))
-  };
-
   if (user === null) {
     return (
       <div>
@@ -41,11 +37,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
-      <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
-
+      <Navbar />
       <Routes>
         <Route path="/" element={<Blogs />} />
         <Route path="/users" element={<Users />} />

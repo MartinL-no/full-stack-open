@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-// import Blog from "./Blog";
 
 const BlogList = () => {
   const blogs = useSelector(state => [...state.blog].sort((a, b) => b.likes - a.likes))

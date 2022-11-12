@@ -9,7 +9,7 @@ const Blogs = () => {
   const blogFormRef = useRef();
 
   const blogForm = () => (
-    <Togglable buttonLabel="new blog" ref={blogFormRef} id="new-blog-button">
+    <Togglable buttonLabel="create new" ref={blogFormRef} id="new-blog-button">
       <BlogForm />
     </Togglable>
   );
