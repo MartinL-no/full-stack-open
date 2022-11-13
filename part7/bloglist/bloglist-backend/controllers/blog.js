@@ -91,4 +91,22 @@ blogRouter.put("/:id", userExtractor, async (request, response, next) => {
   }
 });
 
+blogRouter.put("/:id/comments", async (request, response, next) => {
+  const comments = request.body;
+  const blogId = request.params.id;
+  
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(blogId, { comments: comments }, {
+      new: true,
+    });
+    console.log("updatedBlog", updatedBlog)
+
+    response
+      .status(200)
+      .json(await updatedBlog.populate("user", { username: 1, name: 1 }));
+  } catch (exception) {
+    next(exception);
+  }
+});
+
 module.exports = blogRouter;
