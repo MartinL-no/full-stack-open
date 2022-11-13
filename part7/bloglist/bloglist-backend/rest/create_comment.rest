@@ -1,6 +1,4 @@
 PUT http://localhost:3003/api/blogs/635290f9372cbbf6728de46f/comments
 Content-Type: application/json
 
-{
-  "comments": ["test comment"]
-}
+["test comment"]

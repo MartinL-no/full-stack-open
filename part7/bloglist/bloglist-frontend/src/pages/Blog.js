@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom"
 
 import { likeBlog } from "../reducers/blogReducer";
-
+import Comments from "../components/Comments";
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -23,6 +23,7 @@ const Blog = () => {
       <a href={blog.url}>{blog.url}</a>
       <p>{blog.likes} likes <button onClick={handleAddLike}>like</button></p>
       <p>added by {blog.author}</p>
+      <Comments />
     </>
   )
 }

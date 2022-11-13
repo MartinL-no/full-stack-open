@@ -12,6 +12,7 @@ const blogSchema = new mongoose.Schema({
   },
   comments: {
     type: Array,
+    required: true
   },
   likes: Number,
   user: {
