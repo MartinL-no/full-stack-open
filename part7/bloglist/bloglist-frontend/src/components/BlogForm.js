@@ -1,3 +1,4 @@
+import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from 'react-redux'
 import { createBlog } from "../reducers/blogReducer";
@@ -34,38 +35,38 @@ const BlogForm = () => {
     <>
       <form onSubmit={addBlog}>
         <div>
-          title
-          <input
+          <TextField
             type="text"
             value={title}
             name="Title"
+            label="Title"
             onChange={handleTitleChange}
             id="title-input"
           />
         </div>
         <div>
-          author
-          <input
+          <TextField
             type="text"
             value={author}
             name="Author"
+            label="Author"
             onChange={handleAuthorChange}
             id="author-input"
           />
         </div>
         <div>
-          url
-          <input
+          <TextField
             type="text"
             value={url}
             name="Url"
+            label="Url"
             onChange={handleUrlChange}
             id="url-input"
           />
         </div>
-        <button type="submit" id="create-blog-button">
+        <Button variant="contained" color="primary" type="submit" id="create-blog-button">
           create
-        </button>
+        </Button>
       </form>
     </>
   );

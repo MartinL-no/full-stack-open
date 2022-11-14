@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from "react-router-dom"
-import "./index.css";
 
 import { initializeBlogs } from "./reducers/blogReducer";
 import { getLogin } from "./reducers/loginReducer";
@@ -24,7 +23,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
   }, []);
-
+  
   if (user === null) {
     return (
       <div>
@@ -38,6 +37,8 @@ const App = () => {
   return (
     <div>
       <Navbar />
+      <h1>blog app</h1>
+      <Notification />
       <Routes>
         <Route path="/" element={<Blogs />} />
         <Route path="/users" element={<Users />} />

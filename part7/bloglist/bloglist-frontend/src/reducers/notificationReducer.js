@@ -14,10 +14,9 @@ export const { setNotification } = notificationSlice.actions
 
 let timeoutId = null
 
-export const createNotification = (notification, time) => {
+export const createNotification = (message, severity, time) => {
   return dispatch => {
-    dispatch(setNotification(notification))
-
+    dispatch(setNotification({ message, severity }))
     if (timeoutId) {
       clearTimeout(timeoutId)
     }

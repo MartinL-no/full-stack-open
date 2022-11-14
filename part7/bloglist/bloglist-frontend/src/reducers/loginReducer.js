@@ -2,9 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import blogService from "../services/blogs"
 import loginService from "../services/login"
+import { createNotification } from "../reducers/notificationReducer";
 
 const loginSlice = createSlice({
-  name: 'blog',
+  name: 'login',
   initialState: null,
   reducers: {
     setUser(state, action) {
@@ -27,15 +28,20 @@ export const getLogin = () => {
 }
 
 export const login = (username, password) => {
-  console.log(username, password)
   return async dispatch => {
-      const user = await loginService.login({
+    let user
+    try {
+      user = await loginService.login({
         username,
         password,
       });
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       blogService.setToken(user.token);
-      dispatch(setUser(user))
+    } catch (error) {
+      dispatch(createNotification("Wrong username or password", "warning", 5));
+    }
+
+    dispatch(setUser(user))
   };
 }
 

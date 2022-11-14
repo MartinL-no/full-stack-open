@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { addComment } from "../reducers/blogReducer";
+import { Button, TextField } from "@mui/material";
 
 const Comments = () => {
   const dispatch = useDispatch();
@@ -10,21 +11,21 @@ const Comments = () => {
 
   const submitComment = (event) => {
     event.preventDefault()
+    console.log(event.target)
     
     const comment = event.target.comment.value
     const comments = blog.comments.concat(comment)
     event.target.comment.value = ""
     dispatch(addComment(comments, blog.id))
-  }
+  };
 
   const commentElements = blog.comments.map((comment, index) => <li key={index}>{comment}</li>)
   
   return (
     <>
-      <h3>comments</h3>
       <form onSubmit={submitComment}>
-        <input name="comment" />
-        <button>add comment</button>
+        <TextField name="comment" label="comments" />
+        <Button variant="contained" color="primary" type="submit">add comment</Button>
       </form>
       <ul>
         {commentElements}

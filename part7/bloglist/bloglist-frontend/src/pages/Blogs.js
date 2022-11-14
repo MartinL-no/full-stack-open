@@ -3,7 +3,6 @@ import { useRef } from "react";
 import Togglable from "../components/Togglable";
 import BlogForm from "../components/BlogForm";
 import BlogList from "../components/BlogList";
-import Notification from "../components/Notification";
 
 const Blogs = () => {
   const blogFormRef = useRef();
@@ -16,8 +15,6 @@ const Blogs = () => {
 
   return (
     <>
-      <h2>create new</h2>
-      <Notification />
       {blogForm()}
       <BlogList />
     </>
