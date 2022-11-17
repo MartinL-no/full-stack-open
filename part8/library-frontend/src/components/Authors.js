@@ -47,10 +47,10 @@ const Authors = (props) => {
       <h3>Set birthyear</h3>
       <form onSubmit={onSubmit}>
       <Select 
-            defaultValue={selectedOption}
-            onChange={setSelectedOption}
-            options={options}
-          />
+        defaultValue={selectedOption}
+        onChange={setSelectedOption}
+        options={options}
+      />
         <div>
           born <input
             value={born}
