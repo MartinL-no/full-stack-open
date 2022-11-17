@@ -147,6 +147,12 @@ const resolvers = {
     bookCount: async () => Book.countDocuments({}),
     authorCount: async () => Author.countDocuments({}),
     allBooks: async (root, args) => {
+      if (args.genre) {
+        const filteredByGenre = Book.find({ genres: { $in: [args.genre] }})
+        if (filteredByGenre.length > 0) {
+          return filteredByGenre
+        }
+      }
       // const filteredByAuthor = !args.author ? books : books.filter(book => book.author === args.author)
       // const filteredByGenre = !args.genre 
       //   ? filteredByAuthor 
@@ -182,18 +188,22 @@ const resolvers = {
       }
       return book.populate('author')
     },
-    editAuthor: (root, args) => {
-      const doesAuthorExist = authors.find(a => a.name === args.name)
-      if (!doesAuthorExist) { return }
+    editAuthor: async (root, args) => {
+      const authorToEdit = await Author.findOne({ name: args.name })
 
-      authors = authors.map(a => (
-        a.name === args.name
-        ? { ...a, born: args.setBornTo }
-        : a
-      ))
+      if (!authorToEdit) { return }
       
-      const editedAuthor = authors.find(a => a.name === args.name)
-      return editedAuthor
+      authorToEdit.born = args.setBornTo
+
+      try {
+        await authorToEdit.save()
+      } catch (error){
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      }
+      
+      return authorToEdit
     }
   }
 }
