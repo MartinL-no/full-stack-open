@@ -80,13 +80,12 @@ const resolvers = {
           return filteredByGenre
         }
       }
-      return Book.find({})
+      return Book.find({}).populate('author')
     },
     allAuthors: async () => {
       return Author.find({})
     },
     me: (root, args, context) => {
-      console.log(context)
       return context.currentUser
     }
   },
