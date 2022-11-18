@@ -1,12 +1,24 @@
 import { useQuery } from "@apollo/client"
+import { useState } from "react"
 import { ALL_BOOKS } from "../queries"
 
 const Books = (props) => {
   const result = useQuery(ALL_BOOKS)
+  const [selectedGenre, setSelectedGenre] = useState(null)
 
   if (!props.show || result.loading) {
     return null
   }
+
+  const genres = result.data.allBooks.reduce((acc, { genres }) => {
+      return acc.concat(genres)
+  }, [])
+  const genresWithNoDuplicates = Array.from(new Set(genres))
+  const books = selectedGenre === null
+    ? result.data.allBooks
+    : result.data.allBooks.filter(book => (
+        book.genres.includes(selectedGenre)
+      ))
 
   return (
     <div>
@@ -19,7 +31,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {result.data.allBooks.map((a) => (
+          {books.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -28,6 +40,12 @@ const Books = (props) => {
           ))}
         </tbody>
       </table>
+      {genresWithNoDuplicates.map(genre => (
+        <button
+          key={genre}
+          onClick={() => setSelectedGenre(genre)}
+        >{genre}</button>
+      ))}
     </div>
   )
 }

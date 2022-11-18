@@ -19,6 +19,7 @@ query {
       born
     },
     published
+    genres
   }
 }
 `
