@@ -99,6 +99,7 @@ const resolvers = {
         author: author._id
       })
       const currentUser = context.currentUser
+
       if (!currentUser) {
         throw new AuthenticationError("not authenticated")
       }
@@ -115,8 +116,9 @@ const resolvers = {
     },
     editAuthor: async (root, args, context) => {
       const authorToEdit = await Author.findOne({ name: args.name })
-
+      
       const currentUser = context.currentUser
+      console.log(currentUser)
       if (!currentUser) {
         throw new AuthenticationError("not authenticated")
       }

@@ -1,29 +1,14 @@
-import { useState } from "react"
-import Select from 'react-select'
-import { useMutation, useQuery } from "@apollo/client"
-import { ALL_AUTHORS, EDIT_AUTHOR } from "../queries"
+import { useQuery } from "@apollo/client"
+import { ALL_AUTHORS } from "../queries"
+
+import AuthorEditForm from "./AuthorEditForm"
 
 const Authors = (props) => {
-  const [selectedOption, setSelectedOption] = useState(null)
-  const [born, setBorn] = useState('')
   const result = useQuery(ALL_AUTHORS)
-  const [ editAuthor ] = useMutation(EDIT_AUTHOR,
-    {refetchQueries: [ { query: ALL_AUTHORS } ]}
-  )
 
   if (!props.show || result.loading) {
     return null
   }
-  
-  const onSubmit = async (event) => {
-    event.preventDefault()
-    
-    await editAuthor({ variables: { name: selectedOption.value, setBornTo: parseInt(born) } })
-    
-    setBorn('')
-  }
-
-  const options = result.data.allAuthors.map((a) => ({ value: a.name, label: a.name }))
 
   return (
     <div>
@@ -44,23 +29,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <h3>Set birthyear</h3>
-      <form onSubmit={onSubmit}>
-      <Select 
-        defaultValue={selectedOption}
-        onChange={setSelectedOption}
-        options={options}
-      />
-        <div>
-          born <input
-            value={born}
-            onChange={({ target }) => setBorn(target.value)}
-          />
-        </div>
-        <button type="submit">
-          update author
-        </button>
-      </form>
+      {props.token && <AuthorEditForm allAuthors={result.data.allAuthors} />}
     </div>
   )
 }
