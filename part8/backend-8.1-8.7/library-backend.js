@@ -25,6 +25,10 @@ const typeDefs = gql`
     favoriteGenre: String!
     id: ID!
   }
+  type UserRecommendations {
+    user: User!
+    books: [Book]
+  }
   type Token {
     value: String!
   }
@@ -43,7 +47,11 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String, genre: String): [Book!]!
+    allBooks(
+      author: String,
+      genre: String
+    ): [Book!]!
+    getRecommendations: UserRecommendations
     allAuthors: [Author!]!
     me: User
   }
@@ -75,7 +83,7 @@ const resolvers = {
     authorCount: async () => Author.countDocuments({}),
     allBooks: async (root, args) => {
       if (args.genre) {
-        const filteredByGenre = Book.find({ genres: { $in: [args.genre] }})
+        const filteredByGenre = await Book.find({ genres: { $in: [args.genre] }}).populate('author')
         if (filteredByGenre.length > 0) {
           return filteredByGenre
         }
@@ -85,13 +93,20 @@ const resolvers = {
     allAuthors: async () => {
       return Author.find({})
     },
-    me: (root, args, context) => {
+    me: async (root, args, context) => {
       return context.currentUser
+    },
+    getRecommendations: async (root, args, context) => {
+      const userRecommendations = {
+         User: context.currentUser,
+         Books: await Book.find({ genres: { $in: [context.currentUser.favoriteGenre] }})
+      }
+      return userRecommendations
     }
   },
   Mutation: {
     addBook: async (root, args, context) => {
-      const author = new Author({name: args.author, born: 1958 })
+      const author = new Author({ name: args.author, born: 1958 })
       const book = new Book({
         title: args.title,
         published: args.published,
@@ -118,7 +133,6 @@ const resolvers = {
       const authorToEdit = await Author.findOne({ name: args.name })
       
       const currentUser = context.currentUser
-      console.log(currentUser)
       if (!currentUser) {
         throw new AuthenticationError("not authenticated")
       }

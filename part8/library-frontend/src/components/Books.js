@@ -10,13 +10,12 @@ const Books = (props) => {
     return null
   }
 
-  const genres = result.data.allBooks.reduce((acc, { genres }) => {
-      return acc.concat(genres)
-  }, [])
+  const allBooks = result.data.allBooks
+  const genres = allBooks.reduce((acc, { genres }) => acc.concat(genres), [])
   const genresWithNoDuplicates = Array.from(new Set(genres))
   const books = selectedGenre === null
-    ? result.data.allBooks
-    : result.data.allBooks.filter(book => (
+    ? allBooks
+    : allBooks.filter(book => (
         book.genres.includes(selectedGenre)
       ))
 
@@ -24,6 +23,7 @@ const Books = (props) => {
     <div>
       <h2>books</h2>
 
+      {selectedGenre && <p>in genre <strong>{selectedGenre}</strong></p>}
       <table>
         <tbody>
           <tr>
@@ -46,6 +46,9 @@ const Books = (props) => {
           onClick={() => setSelectedGenre(genre)}
         >{genre}</button>
       ))}
+      <button
+          onClick={() => setSelectedGenre(null)}
+        >all</button>
     </div>
   )
 }

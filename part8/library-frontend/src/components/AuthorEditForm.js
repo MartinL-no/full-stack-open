@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { useState } from 'react'
 import Select from 'react-select'
 
@@ -11,7 +11,6 @@ const AuthorEditForm = ({ allAuthors }) => {
     {refetchQueries: [ { query: ALL_AUTHORS } ]}
   )
   const options = allAuthors.map((a) => ({ value: a.name, label: a.name }))
-
 
   const onSubmit = async (event) => {
     event.preventDefault()
