@@ -93,7 +93,7 @@ const resolvers = {
     allAuthors: async () => {
       return Author.find({})
     },
-    me: async (root, args, context) => {
+    me: (root, args, context) => {
       return context.currentUser
     },
     getRecommendations: async (root, args, context) => {
