@@ -40,6 +40,7 @@ query findBooksByGenre($genre: String){
     },
     published
     genres
+    id
   }
 }
 `

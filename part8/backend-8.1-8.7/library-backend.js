@@ -96,7 +96,6 @@ const resolvers = {
     },
     allGenres: async () => {
       const books = await Book.find({})
-      console.log(books)
       const genres = books.reduce((acc, { genres }) => acc.concat(genres), [])
       const genresWithNoDuplicates = Array.from(new Set(genres))
 
