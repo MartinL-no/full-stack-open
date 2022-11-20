@@ -51,6 +51,7 @@ const typeDefs = gql`
       author: String,
       genre: String
     ): [Book!]!
+    allGenres: [String!]!
     getRecommendations: UserRecommendations
     allAuthors: [Author!]!
     me: User
@@ -93,6 +94,14 @@ const resolvers = {
     allAuthors: async () => {
       return Author.find({})
     },
+    allGenres: async () => {
+      const books = await Book.find({})
+      console.log(books)
+      const genres = books.reduce((acc, { genres }) => acc.concat(genres), [])
+      const genresWithNoDuplicates = Array.from(new Set(genres))
+
+      return genresWithNoDuplicates
+    },
     me: (root, args, context) => {
       return context.currentUser
     },
@@ -106,6 +115,7 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args, context) => {
+      const currentUser = context.currentUser
       const author = new Author({ name: args.author, born: 1958 })
       const book = new Book({
         title: args.title,
@@ -113,7 +123,6 @@ const resolvers = {
         genres: args.genres,
         author: author._id
       })
-      const currentUser = context.currentUser
 
       if (!currentUser) {
         throw new AuthenticationError("not authenticated")

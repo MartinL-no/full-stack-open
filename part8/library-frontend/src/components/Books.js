@@ -1,23 +1,22 @@
 import { useQuery } from "@apollo/client"
-import { useState } from "react"
-import { ALL_BOOKS } from "../queries"
+import { useEffect, useState } from "react"
+import { GENRE_BOOKS } from "../queries"
+import GenreButtons from "./GenreButtons"
 
 const Books = (props) => {
-  const result = useQuery(ALL_BOOKS)
   const [selectedGenre, setSelectedGenre] = useState(null)
+  const result = useQuery(GENRE_BOOKS)
 
+  useEffect(() => {
+    const updateBooks = async () => {
+      result.refetch({ genre: selectedGenre })
+    }
+    updateBooks()
+  }, [selectedGenre, result])
+  
   if (!props.show || result.loading) {
     return null
   }
-
-  const allBooks = result.data.allBooks
-  const genres = allBooks.reduce((acc, { genres }) => acc.concat(genres), [])
-  const genresWithNoDuplicates = Array.from(new Set(genres))
-  const books = selectedGenre === null
-    ? allBooks
-    : allBooks.filter(book => (
-        book.genres.includes(selectedGenre)
-      ))
 
   return (
     <div>
@@ -31,7 +30,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a) => (
+          {result.data.allBooks.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -40,15 +39,10 @@ const Books = (props) => {
           ))}
         </tbody>
       </table>
-      {genresWithNoDuplicates.map(genre => (
-        <button
-          key={genre}
-          onClick={() => setSelectedGenre(genre)}
-        >{genre}</button>
-      ))}
-      <button
-          onClick={() => setSelectedGenre(null)}
-        >all</button>
+      <GenreButtons 
+        setSelectedGenre={setSelectedGenre}
+        show={props.show}
+        />
     </div>
   )
 }
