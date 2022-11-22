@@ -9,6 +9,7 @@ const BOOK_DETAILS = gql`
       born
     },
     id
+    genres
   }
 `
 
@@ -38,6 +39,7 @@ query {
     },
     published
     genres
+    id
   }
 }
 `
