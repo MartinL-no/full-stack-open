@@ -23,7 +23,19 @@ const resolvers = {
       return Book.find({}).populate('author')
     },
     allAuthors: async () => {
-      return Author.find({})
+      const books = await Book.find({})
+      const authors = await Author.find({})
+      const authorWithBookCount = authors.map(author => {
+        const bookCount = books.filter(book => book.author.equals(author._id)).length
+        return { 
+          _id: author._id,
+          name: author._doc.name,
+          born: author._doc.born,
+          bookCount
+        }
+      })
+      console.log(authorWithBookCount)
+      return authorWithBookCount
     },
     allGenres: async () => {
       const books = await Book.find({})
@@ -43,6 +55,13 @@ const resolvers = {
       return userRecommendations
     }
   },
+  // Author: {
+  //   bookCount: async (root) => {
+      
+
+  //     return bookCount
+  //   }
+  // },
   Mutation: {
     addBook: async (root, args, context) => {
       const currentUser = context.currentUser
