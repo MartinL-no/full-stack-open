@@ -34,7 +34,7 @@ const resolvers = {
           bookCount
         }
       })
-      console.log(authorWithBookCount)
+
       return authorWithBookCount
     },
     allGenres: async () => {
