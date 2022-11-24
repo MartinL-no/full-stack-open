@@ -8,14 +8,17 @@ interface exerciseResult {
   average: number,
 }
 
-const calculateExercises = (inputArray: Array<number>, target: number): exerciseResult => {
-  const periodLength = inputArray.length;
-  const trainingDays = inputArray.filter(i => i > 0).length;
-  const average = inputArray.reduce((a, b) => a + b, 0) / inputArray.length;
-  const success = average > target ? true : false
-  const rating = average < target 
+type inputValues  = Array<number>
+
+const calculateExercises = (inputArray: Array<number>): exerciseResult => {
+  const inputExerciseHours = inputArray.slice(1)
+  const periodLength = inputExerciseHours.length;
+  const trainingDays = inputExerciseHours.filter(i => i > 0).length;
+  const average = inputExerciseHours.reduce((a, b) => a + b, 0) / inputExerciseHours.length;
+  const success = average > inputArray[0] ? true : false
+  const rating = average < inputArray[0] 
     ? 1
-    : average > (target + 3)
+    : average > (inputExerciseHours[0] + 3)
     ? 3
     : 2
   const ratingDescription = success ? 'good job!' : 'not too bad but could be better'
@@ -26,13 +29,29 @@ const calculateExercises = (inputArray: Array<number>, target: number): exercise
     success,
     rating,
     ratingDescription,
-    target,
+    target: inputArray[0],
     average,
   }
 }
 
+const parseArguments = (args: Array<string>): inputValues => {
+  if (args.length < 1) throw new Error('Not enough arguments');
+
+  const validValues = args.find((arg, index) => {
+    return !isNaN(Number(args[index]))
+  })
+
+  if (validValues) {
+    return args.map(arg => Number(arg))
+  } else {
+    throw new Error('Provided values were not numbers!');
+  }
+}
+
 try {
-  console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1] , 2));
+  const consoleInputArray = parseArguments(process.argv.slice(2))
+
+  console.log(calculateExercises(consoleInputArray));
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong.'
   if (error instanceof Error) {
