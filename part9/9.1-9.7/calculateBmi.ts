@@ -17,13 +17,13 @@ const calculateBmi = (cm: number, kgs: number): Result => {
 }
 
 const parseBmiArguments = (args: Array<string>): BmiValues => {
-  if (args.length < 4) throw new Error('Not enough arguments');
-  if (args.length > 4) throw new Error('Too many arguments');
+  if (args.length < 2) throw new Error('Not enough arguments');
+  if (args.length > 2) throw new Error('Too many arguments');
 
-  if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+  if (!isNaN(Number(args[0])) && !isNaN(Number(args[1]))) {
     return {
-      cm: Number(args[2]),
-      kgs: Number(args[3])
+      cm: Number(args[0]),
+      kgs: Number(args[1])
     } 
   } else {
     throw new Error('Provided values were not numbers!');
@@ -31,7 +31,7 @@ const parseBmiArguments = (args: Array<string>): BmiValues => {
 }
 
 try {
-  const { cm, kgs } = parseBmiArguments(process.argv)
+  const { cm, kgs } = parseBmiArguments(process.argv.slice(2))
 
   console.log(calculateBmi(cm, kgs));
 } catch (error: unknown) {
@@ -41,3 +41,5 @@ try {
   }
   console.log(errorMessage);
 }
+
+export default calculateBmi

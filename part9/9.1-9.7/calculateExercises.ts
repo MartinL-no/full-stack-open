@@ -37,7 +37,7 @@ const calculateExercises = (inputArray: Array<number>): exerciseResult => {
 const parseArguments = (args: Array<string>): inputValues => {
   if (args.length < 1) throw new Error('Not enough arguments');
 
-  const validValues = args.find((arg, index) => {
+  const validValues = args.find((_arg, index) => {
     return !isNaN(Number(args[index]))
   })
 
