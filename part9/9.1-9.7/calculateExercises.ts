@@ -37,11 +37,11 @@ const calculateExercises = (inputArray: Array<number>): exerciseResult => {
 const parseArguments = (args: Array<string>): inputValues => {
   if (args.length < 1) throw new Error('Not enough arguments');
 
-  const validValues = args.find((_arg, index) => {
-    return !isNaN(Number(args[index]));
-  });
+  const inValidValues = args.find(arg => isNaN(Number(arg)));
 
-  if (validValues) {
+  
+  if (inValidValues === undefined) {
+    console.log("validValues", inValidValues);
     return args.map(arg => Number(arg));
   } else {
     throw new Error('Provided values were not numbers!');
@@ -59,3 +59,5 @@ try {
   }
   console.log(errorMessage);
 }
+
+export { calculateExercises, parseArguments };
