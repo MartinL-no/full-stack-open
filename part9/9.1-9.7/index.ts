@@ -8,8 +8,8 @@ app.get('/ping', (_req, res) => {
 });
 
 app.get('/bmi', (req, res) => {
-  const height = Number(req.query.height)
-  const weight = Number(req.query.weight)
+  const height = Number(req.query.height);
+  const weight = Number(req.query.weight);
 
   try {
     if (isNaN(height) || isNaN(weight)) {
@@ -24,9 +24,9 @@ app.get('/bmi', (req, res) => {
   } catch (error: unknown) {
     console.log((error as Error).message);
     
-    res.send({ error: (error as Error).message })
+    res.send({ error: (error as Error).message });
   }
-})
+});
 
 const PORT = 3002;
 
