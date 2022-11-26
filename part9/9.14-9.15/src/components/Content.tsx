@@ -6,12 +6,11 @@ interface ContentProps {
 }
 
 const Content = (props: ContentProps) => {
-
   return (
     <>
-      {props.courseParts.map(coursePart => {
-        return <Part key={coursePart.name} coursePart={coursePart} />
-      })}
+      {props.courseParts.map(coursePart => (
+        <Part key={coursePart.name} coursePart={coursePart} />
+      ))}
     </>
   )
 
