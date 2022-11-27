@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Female, Male } from "@mui/icons-material";
 
+import Entries from "./Entries";
 import { apiBaseUrl } from "../constants";
 import { Patient } from "../types";
 import { useStateValue, addPatientDetails } from "../state";
@@ -17,7 +18,8 @@ const PatientPage = () => {
       if (fullPatientDetails === undefined) {
         try {
           const { data: patientDetailsFromApi } = await axios.get<Patient>(
-            `${apiBaseUrl}/patients/${id as string}`
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            `${apiBaseUrl}/patients/${id}`
           );
           dispatch(addPatientDetails(patientDetailsFromApi));
         } catch (e) {
@@ -29,12 +31,14 @@ const PatientPage = () => {
   }, []);
 
   const genderIcon = fullPatientDetails?.gender === "female" ? <Female /> : <Male />;
+  const hasEntries = Boolean(fullPatientDetails?.entries && fullPatientDetails.entries.length > 0);
 
   return (
     <>
       <h2>{fullPatientDetails?.name} {genderIcon}</h2>
       <p>ssn: {fullPatientDetails?.ssn}</p>
       <p>occupation: {fullPatientDetails?.occupation}</p>
+      {hasEntries && <Entries />}
     </>
   );
 };
