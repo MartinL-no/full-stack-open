@@ -9,7 +9,6 @@ import { useStateValue } from '../state';
 const HealthCheckEntry: React.FC<{ entry: HealthCheckEntryType }> = ({ entry }) => {
   const [{ diagnoses }] = useStateValue();
   const favoriteIconColour = entry.healthCheckRating === 1 ? 'yellow' : 'green';
-  console.log(entry);
   const getDiagnosisDescription = (code: string) => {
     const description = Object.values(diagnoses)
       .reduce((accumulator, d) => {

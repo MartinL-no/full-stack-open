@@ -1,3 +1,9 @@
+// ---------------------------------------------------------------------------------------------------------------------------------------
+// By: Andrii Dieiev
+// From: https://github.com/microsoft/TypeScript/issues/39556#issuecomment-656925230
+export type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
 export interface Diagnosis {
   code: string;
   name: string;
@@ -19,8 +25,14 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3
 }
 
+export enum EntryTypes {
+  HealthCheck = "HealthCheck",
+  OccupationalHealthcare = "OccupationalHealthcare",
+  Hospital = "Hospital",
+}
+
 interface HealthCheckEntry extends BaseEntry {
-  type: "HealthCheck";
+  type: 'HealthCheck';
   healthCheckRating: HealthCheckRating;
 }
 
@@ -30,9 +42,9 @@ type SickLeave = {
 };
 
 interface OccupationalHealthcareEntry extends BaseEntry {
-  type: "OccupationalHealthcare";
+  type: 'OccupationalHealthcare';
   employerName: string;
-  sickLeave?: SickLeave
+  sickLeave?: SickLeave;
 }
 
 type Discharge = {
@@ -41,16 +53,17 @@ type Discharge = {
 };
 
 interface HospitalEntry extends BaseEntry {
-  type: "Hospital";
+  type: 'Hospital';
   discharge: Discharge;
-
 }
 
 export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
-  
+
+export type NewEntry = UnionOmit<Entry, 'id'>;
+
 export enum Gender {
   Male = 'male',
   Female = 'female',
@@ -63,11 +76,11 @@ export interface Patient {
   occupation: string;
   gender: Gender;
   dateOfBirth: string;
-  entries?: Entry[]
+  entries: Entry[];
 }
 
 export type NonSensitivePatientEntry = Omit<Patient, 'ssn'>;
 
-export type NewPatientEntry = Omit<Patient, 'id'>;
+export type NewPatient = Omit<Patient, 'id'>;
 
 export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
