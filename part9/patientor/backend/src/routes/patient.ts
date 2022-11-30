@@ -11,9 +11,7 @@ router.get('/', (_req, res) => {
 router.get('/:id', (req, res) => {
   const patient = patientService.getPatient(req.params.id);
 
-  if (patient === null) {
-    res.send({ error: 'patient not found'});
-  } 
+  if (patient === null) res.send({ error: 'patient not found'});
 
   res.send(patient);
 });
@@ -28,10 +26,11 @@ router.post('/', (req, res) => {
 
 router.post('/:id/entries', (req, res) => {
   try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const newPatientEntry = toNewPatientEntry(req.body);
-    const newPatientEntryWithId = patientService.addPatientEntry(req.params.id, newPatientEntry);
-    res.send(newPatientEntryWithId);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const newEntry = toNewPatientEntry(req.body);
+    const newEntryWithId = patientService.addPatientEntry(req.params.id, newEntry);
+
+    res.send(newEntryWithId);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong.';
     if (error instanceof Error) {

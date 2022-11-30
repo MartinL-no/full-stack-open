@@ -39,15 +39,16 @@ const addPatient = (entry: NewPatient): Patient => {
   return newPatient;
 };
 
-const addPatientEntry = (patientId: Patient['id'], newEntry: NewEntry): Patient | null => {
+const addPatientEntry = (patientId: Patient['id'], newEntry: NewEntry): Entry | null => {
   const patient = patients.find(p => p.id === patientId);
   
   if (patient === undefined) return null;
-
+  
   const entry: Entry = { id: uuid(), ...newEntry };
+
   patient.entries =[...patient.entries, entry];
 
- return patient;
+ return entry;
 };
 
 export default {

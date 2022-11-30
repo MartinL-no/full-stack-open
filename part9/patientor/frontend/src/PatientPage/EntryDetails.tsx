@@ -1,4 +1,4 @@
-import { Entry } from "../types";
+import { Entry, EntryType } from "../types";
 import HealthCheckEntry from "./HealthCheckEntry";
 import HospitalEntry from './HospitalEntry';
 import OccupationalHealthcareEntry from "./OccupationalHealthEntry";
@@ -9,13 +9,13 @@ const EntryDetails: React.FC<{ entry: Entry}> = ({ entry }) => {
       `Unhandled discriminated union member: ${JSON.stringify(value)}`
     );
   };
-  console.log(entry);
+
   switch (entry.type) {
-    case "Hospital":
+    case EntryType.Hospital:
       return <HospitalEntry entry={entry} />;
-    case  "OccupationalHealthcare":
+    case  EntryType.OccupationalHealthcare:
       return <OccupationalHealthcareEntry entry={entry} />;
-    case "HealthCheck":
+    case EntryType.HealthCheck:
       return <HealthCheckEntry entry={entry} />;
       break;
     default:

@@ -1,3 +1,9 @@
+// ---------------------------------------------------------------------------------------------------------------------------------------
+// By: Andrii Dieiev
+// From: https://github.com/microsoft/TypeScript/issues/39556#issuecomment-656925230
+export type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
 export interface Diagnoses {
   code: string;
   name: string;
@@ -19,8 +25,14 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3
 }
 
+export enum EntryType {
+  HealthCheck = "HealthCheck",
+  OccupationalHealthcare= "OccupationalHealthcare",
+  Hospital= "Hospital",
+}
+
 export interface HealthCheckEntry extends BaseEntry {
-  type: "HealthCheck";
+  type: EntryType.HealthCheck;
   healthCheckRating: HealthCheckRating;
 }
 
@@ -30,7 +42,7 @@ type SickLeave = {
 };
 
 export interface OccupationalHealthcareEntry extends BaseEntry {
-  type: "OccupationalHealthcare";
+  type: EntryType.OccupationalHealthcare;
   employerName: string;
   sickLeave?: SickLeave
 }
@@ -41,7 +53,7 @@ type Discharge = {
 };
 
 export interface HospitalEntry extends BaseEntry {
-  type: "Hospital";
+  type: EntryType.Hospital;
   discharge: Discharge;
 }
 
@@ -49,6 +61,8 @@ export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
+
+export type NewEntry = UnionOmit<Entry,'id'>;
 
 export interface Diagnosis {
   code: string;

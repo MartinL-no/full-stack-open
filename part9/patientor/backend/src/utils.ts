@@ -89,10 +89,7 @@ const isHealthCheckRating = (param: any): param is HealthCheckRating => {
 };
 
 const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating => {
-  
   if (!healthCheckRating || !isHealthCheckRating(healthCheckRating)) {
-    console.log(Object.values(HealthCheckRating)[4], typeof Object.values(HealthCheckRating)[4], '!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!' , healthCheckRating, typeof healthCheckRating);
     throw new Error('Incorrect or missing health check rating:' + healthCheckRating);
   }
   return healthCheckRating;
@@ -146,56 +143,44 @@ const toNewPatientEntry = (object: EntryFields): NewEntry => {
     );
   };
 
+  const BaseEntry = {
+    description: parseDescription(object.description),
+    date: parseDate(object.date),
+    specialist: parseSpecialist(object.specialist),
+    diagnosisCodes: object.diagnosisCodes ? [] : object.diagnosisCodes as string[],
+  };
+
   switch (object.type) {
     case 'OccupationalHealthcare':
       const OccupationalHealthcareEntry: NewEntry = {
+        ... BaseEntry,
         type: 'OccupationalHealthcare',
-        description: parseDescription(object.description),
-        date: parseDate(object.date),
-        specialist: parseSpecialist(object.specialist),
         employerName: parseEmployerName(object.employerName),
       };
-      
-      if (object.diagnosisCodes) {
-        OccupationalHealthcareEntry.diagnosisCodes = object.diagnosisCodes as string[];
-      }
       if (object.sickLeave) {
         OccupationalHealthcareEntry.sickLeave = {
           startDate: parseDate(object.sickLeave.startDate),
           endDate: parseDate(object.sickLeave.endDate)
         };
       }
-      
       return OccupationalHealthcareEntry;
     case 'HealthCheck':
       const healthCheckEntry: NewEntry = {
+        ... BaseEntry,
         type: 'HealthCheck',
-        description: parseDescription(object.description),
-        date: parseDate(object.date),
-        specialist: parseSpecialist(object.specialist),
         healthCheckRating: parseHealthCheckRating(object.healthCheckRating)
       };
-      if (object.diagnosisCodes) {
-        healthCheckEntry.diagnosisCodes = object.diagnosisCodes as string[];
-      }
       return healthCheckEntry;
     case 'Hospital':
-        const hospitalEntry: NewEntry = {
-          type: 'Hospital',
-          description: parseDescription(object.description),
-          date: parseDate(object.date),
-          specialist: parseSpecialist(object.specialist),
-          discharge: {
-            date: parseDate(object.discharge?.date),
-            criteria: parseCriteria(object.discharge?.criteria)
-          }
-        };
-  
-        if (object.diagnosisCodes) {
-          hospitalEntry.diagnosisCodes = object.diagnosisCodes as string[];
+      const hospitalEntry: NewEntry = {
+        ... BaseEntry,
+        type: 'Hospital',
+        discharge: {
+          date: parseDate(object.discharge?.date),
+          criteria: parseCriteria(object.discharge?.criteria)
         }
-  
-        return hospitalEntry;
+      };
+      return hospitalEntry;
     default:
       return assertNever(object);
     }
