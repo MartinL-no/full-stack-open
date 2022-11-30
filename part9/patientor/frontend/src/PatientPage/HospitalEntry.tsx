@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
+import { HospitalEntry as HospitalEntryType } from "../types";
 import { boxStyle } from './styles'; 
 import { useStateValue } from '../state';
-import { HospitalEntry as HospitalEntryType } from "../types";
 
 const HospitalEntry: React.FC<{ entry: HospitalEntryType }> = ({ entry }) => {
   const [{ diagnoses }] = useStateValue();

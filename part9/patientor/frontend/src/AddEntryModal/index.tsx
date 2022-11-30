@@ -1,6 +1,7 @@
+import { Dispatch } from "react";
 import { Dialog, DialogTitle, DialogContent, Divider } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { Dispatch } from "react";
+
 import AddPatientForm, { EntryFormValues } from "./AddEntryForm";
 
 interface Props {

@@ -1,10 +1,9 @@
 import Box from '@mui/material/Box';
 import WorkIcon from '@mui/icons-material/Work';
 
-import { boxStyle } from './styles';
-
-import { useStateValue } from '../state';
 import { OccupationalHealthcareEntry as OccupationalHealthcareEntryType } from "../types";
+import { boxStyle } from './styles';
+import { useStateValue } from '../state';
 
 const OccupationalHealthcareEntry: React.FC<{ entry: OccupationalHealthcareEntryType }> = ({ entry }) => {
   const [{ diagnoses }] = useStateValue();

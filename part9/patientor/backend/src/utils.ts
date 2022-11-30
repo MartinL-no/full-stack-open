@@ -85,7 +85,7 @@ const parseEmployerName = (employerName: unknown): string => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isHealthCheckRating = (param: any): param is HealthCheckRating => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  return Object.keys(HealthCheckRating).includes(param);
+  return Object.values(HealthCheckRating).includes(param);
 };
 
 const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating => {

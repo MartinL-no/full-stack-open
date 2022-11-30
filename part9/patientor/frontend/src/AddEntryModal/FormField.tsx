@@ -6,14 +6,15 @@ import {
   MenuItem,
   TextField as TextFieldMUI,
   Typography,
+  InputLabel
 } from "@material-ui/core";
-import { Diagnosis, EntryType } from "../types";
-import { InputLabel } from "@material-ui/core";
 import Input from '@material-ui/core/Input';
+
+import { Diagnosis, EntryType, HealthCheckRating } from "../types";
 
 // structure of a single option
 export type EntryTypeOption = {
-  value: EntryType;
+  value: EntryType | HealthCheckRating
   label: string;
 };
 

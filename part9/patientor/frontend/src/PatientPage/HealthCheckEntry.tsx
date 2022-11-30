@@ -2,8 +2,8 @@ import Box from '@mui/material/Box';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-import {boxStyle} from './styles'; 
 import { HealthCheckEntry as HealthCheckEntryType } from "../types";
+import {boxStyle} from './styles'; 
 import { useStateValue } from '../state';
 
 const HealthCheckEntry: React.FC<{ entry: HealthCheckEntryType }> = ({ entry }) => {

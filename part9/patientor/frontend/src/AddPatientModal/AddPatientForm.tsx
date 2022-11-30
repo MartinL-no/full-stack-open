@@ -1,6 +1,5 @@
-import React from "react";
-import { Grid, Button } from "@material-ui/core";
 import { Field, Formik, Form } from "formik";
+import { Grid, Button } from "@material-ui/core";
 
 import { TextField, SelectField, GenderOption } from "./FormField";
 import { Gender, Patient } from "../types";

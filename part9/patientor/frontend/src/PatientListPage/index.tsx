@@ -1,17 +1,24 @@
 import React from "react";
-import axios from "axios";
-import { Box, Table, Button, TableHead, Typography } from "@material-ui/core";
-
-import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
-import AddPatientModal from "../AddPatientModal";
-import { Patient } from "../types";
-import { apiBaseUrl } from "../constants";
-import HealthRatingBar from "../components/HealthRatingBar";
-import { useStateValue, addPatient } from "../state";
-import { TableCell } from "@material-ui/core";
-import { TableRow } from "@material-ui/core";
-import { TableBody } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import {
+  Box,
+  Table,
+  Button,
+  TableHead,
+  Typography,
+  TableCell,
+  TableRow,
+  TableBody
+} from "@material-ui/core";
+
+import { Patient } from "../types";
+import { useStateValue, addPatient } from "../state";
+import { apiBaseUrl } from "../constants";
+import AddPatientModal from "../AddPatientModal";
+import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
+import HealthRatingBar from "../components/HealthRatingBar";
+
 
 const PatientListPage = () => {
   const [{ patients }, dispatch] = useStateValue();

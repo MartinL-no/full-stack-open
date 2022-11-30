@@ -4,10 +4,10 @@ import axios from "axios";
 import { Female, Male } from "@mui/icons-material";
 import { Button } from "@material-ui/core";
 
-import Entries from "./Entries";
-import { apiBaseUrl } from "../constants";
 import { Entry, Patient } from "../types";
 import { useStateValue, addPatientDetails, addEntry } from "../state";
+import { apiBaseUrl } from "../constants";
+import Entries from "./Entries";
 
 import AddPatientModal from "../AddEntryModal";
 import { EntryFormValues } from "../AddEntryModal/AddEntryForm";

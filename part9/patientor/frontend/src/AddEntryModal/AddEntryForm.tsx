@@ -1,10 +1,10 @@
 import { Dispatch } from "react";
-import { useStateValue } from "../state/state";
 import { Grid, Button } from "@material-ui/core";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, SelectField, EntryTypeOption, DiagnosisSelection } from "./FormField";
 import { Diagnoses, NewEntry, EntryType, HealthCheckRating } from "../types";
+import { useStateValue } from "../state/state";
+import { TextField, SelectField, EntryTypeOption, DiagnosisSelection } from "./FormField";
 
 export type EntryFormValues = NewEntry;
 
@@ -15,9 +15,16 @@ interface Props {
 }
 
 const entryTypeOptions: EntryTypeOption[] = [
-  { value: EntryType.HealthCheck, label: "HealthCheck" },
+  { value: EntryType.HealthCheck, label: "Health Check" },
   { value: EntryType.OccupationalHealthcare, label: "Occupational Healthcare" },
   { value: EntryType.Hospital, label: "Hospital" },
+];
+
+const healthCheckRatingOptions: EntryTypeOption[] = [
+  { value: HealthCheckRating.CriticalRisk, label: "Critical Risk" },
+  { value: HealthCheckRating.Healthy, label: "Healthy" },
+  { value: HealthCheckRating.HighRisk, label: "High Risk" },
+  { value: HealthCheckRating.LowRisk, label: "Low Risk" },
 ];
 
 interface allEntryFields {
@@ -118,7 +125,6 @@ export const AddEntryForm = ({ onSubmit, onCancel, setError }: Props) => {
       }}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
-        console.log(values);
         switch (values.type) {
           case "Hospital":
             return (
@@ -220,7 +226,7 @@ export const AddEntryForm = ({ onSubmit, onCancel, setError }: Props) => {
                   component={TextField}
                 />
                 <Field
-                  label="Sick Leave:  start date"
+                  label="Sick Leave: start date"
                   placeholder="YYYY-MM-DD"
                   name="sickLeave.startDate"
                   component={TextField}
@@ -258,6 +264,62 @@ export const AddEntryForm = ({ onSubmit, onCancel, setError }: Props) => {
                 </Grid>
               </Form>
             );
+            case "HealthCheck":
+              return (
+                <Form className="form ui">
+                  <SelectField label="Type" name="type" options={entryTypeOptions} />
+                  <Field
+                    label="Description"
+                    placeholder="Description"
+                    name="description"
+                    component={TextField}
+                  />
+                  <Field
+                    label="Specialist"
+                    placeholder="Specialist"
+                    name="specialist"
+                    component={TextField}
+                  />
+                  <DiagnosisSelection
+                    setFieldValue={setFieldValue}
+                    setFieldTouched={setFieldTouched}
+                    diagnoses={Object.values(diagnoses)}
+                  />
+                  <Field
+                    label="Date"
+                    placeholder="YYYY-MM-DD"
+                    name="date"
+                    component={TextField}
+                  />
+                  <SelectField label="Health Check Rating" name="healthCheckRating" options={healthCheckRatingOptions} />
+
+                  <Grid>
+                    <Grid item>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        style={{ float: "left" }}
+                        type="button"
+                        onClick={onCancel}
+                      >
+                        Cancel
+                      </Button>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        style={{
+                          float: "right",
+                        }}
+                        type="submit"
+                        variant="contained"
+                        disabled={!dirty || !isValid}
+                      >
+                        Add
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Form>
+              );
           default:
             break;
         }

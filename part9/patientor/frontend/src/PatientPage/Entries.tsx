@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
-import { useStateValue } from "../state";
+
 import { Patient, Entry } from "../types";
+import { useStateValue } from "../state";
 import EntryDetails from "./EntryDetails";
 
 const Entries = () => {
