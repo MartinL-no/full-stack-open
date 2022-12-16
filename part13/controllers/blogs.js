@@ -29,6 +29,15 @@ router.get('/:id', blogFinder, async (req, res) => {
   }
 })
 
+router.put('/:id', blogFinder, async (req, res) => {
+  try {
+    req.note.likes = req.body.likes
+    return res.json({ likes: req.note.likes })
+  } catch(error) {
+    return res.status(400).json({ error: "blog does not exist" })
+  }
+})
+
 router.delete('/:id', blogFinder, async (req, res) => {
   if (req.note) {
     await req.note.destroy()
