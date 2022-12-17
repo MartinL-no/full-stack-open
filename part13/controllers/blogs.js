@@ -1,10 +1,15 @@
 const router = require('express').Router()
 
 const { userExtractor, blogFinder } = require('../util/middleware')
-const { Blog } = require('../models')
+const { Blog, User } = require('../models')
 
 router.get('/', async (req, res) => {
-  const blogs =  await Blog.findAll()
+  const blogs =  await Blog.findAll({
+    include: {
+      model: User,
+      attributes: ['id', 'username', 'name']
+    },
+  })
   res.json(blogs)
 })
 
@@ -14,10 +19,20 @@ router.post('/', userExtractor, async (req, res) => {
 })
 
 router.get('/:id', blogFinder, async (req, res) => {
-  if (req.blog) {
-    res.json(req.blog)
+  const blog = await Blog.findByPk(
+    req.params.id,
+    {
+      attributes: { exclude: ['userId'] },
+      include: {
+        model: User,
+        attributes: ['id', 'username', 'name']
+      }
+    }
+  )
+  if (blog) {
+    res.json(blog)
   } else {
-    res.status(404).end()
+    throw new Error('blog does not exist')
   }
 })
 
@@ -30,8 +45,10 @@ router.delete('/:id', blogFinder, userExtractor, async (req, res) => {
   if (req.blog && req.user.id === req.blog.userId) {
     await req.blog.destroy()
     res.status(204).end()
-  } else if (req.blog) {
+  } else if (req.blog && req.user.id !== req.blog.userId) {
     throw new Error('user does not have authorization to delete this blog')
+  } else {
+    throw new Error('blog does not exist')
   }
 })
 

@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken')
 
 const { User, Blog } = require('../models')
 
-
 const tokenExtractor = (request, response, next) => {
     const authorization = request.get('authorization')
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
@@ -63,6 +62,10 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.message === 'invalid username or password') {
     return response.status(401).send({ error: 'invalid username or password' })
+  }
+
+  if (error.message === 'blog does not exist') {
+    return response.status(404).send({ error: 'blog does not exist' })
   }
 
   if (error.name === 'SequelizeUniqueConstraintError') {
