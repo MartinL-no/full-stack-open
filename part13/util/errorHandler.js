@@ -1,5 +1,6 @@
 const errorHandler = (error, request, response, next) => {
   console.error("error message", error.message)
+  console.error("error name", error.name)
 
   if (error.message.includes('notNull Violation: blog.url cannot be null')) {
     return response.status(400).send({ error: 'blog url must be included' })
@@ -27,9 +28,18 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'SequelizeUniqueConstraintError') {
     const sequelizeUniqueConstraintErrors = error.errors.reduce((acc, e) => acc += `${e.message} `, '')
+    console.log('sequelizeUniqueConstraintErrors', sequelizeUniqueConstraintErrors)
 
     if (sequelizeUniqueConstraintErrors.includes('username must be unique')) {
       return response.status(400).send({ error: 'username must be unique' })
+    }
+  }
+
+  if (error.name === 'SequelizeValidationError') {
+    const SequelizeValidationError = error.errors.reduce((acc, e) => acc += `${e.message} `, '')
+
+    if (SequelizeValidationError.includes('Validation isEmail on username failed')) {
+      return response.status(400).send({ error: 'Validation isEmail on username failed' })
     }
   }
 
