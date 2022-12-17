@@ -1,16 +1,8 @@
 const router = require('express').Router()
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 
+const { userExtractor } = require('../util/middleware')
 const { User } = require('../models')
-
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
 
 router.get('/', async (req, res) => {
   const users = await User.findAll({
@@ -38,16 +30,9 @@ router.post('/', async (req, res) => {
   })
 })
 
-router.put('/:username', async (req, res) => {
+router.put('/:username', userExtractor, async (req, res) => {
   const body = req.body
-  const token = getTokenFrom(req)
-
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!decodedToken.id) {
-    throw 'invalid token'
-  }
-
-  const user = await User.findOne({ where: { username: req.params.username }})
+  const user = req.user
 
   if (user === null ) {
     res.status(404).end()
