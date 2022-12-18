@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const sequelize = require('sequelize')
 const { Op } = require('sequelize')
 
 const { userExtractor, blogFinder } = require('../util/middleware')
@@ -21,7 +22,8 @@ router.get('/', async (req, res) => {
       model: User,
       attributes: ['id', 'username', 'name']
     },
-    where
+    where,
+    order: [['likes', 'DESC']]
   })
   res.json(blogs)
 })
