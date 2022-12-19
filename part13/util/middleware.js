@@ -26,7 +26,8 @@ const blogFinder = async (req, res, next) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-  console.error("error message", error.message)
+  console.error("error message:", error.message)
+  console.log(error)
 
   if (error.message.includes('notNull Violation: blog.url cannot be null')) {
     return response.status(400).send({ error: 'blog url must be included' })
@@ -48,7 +49,15 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).send({ error: 'name must be included' })
   }
 
+  if (error.message === 'invalid signature') {
+    return response.status(401).send({ error: 'token missing or invalid' })
+  }
+
   if (error.message === 'invalid token') {
+    return response.status(401).send({ error: 'token missing or invalid' })
+  }
+
+  if (error.message === "Cannot read properties of null (reading 'id')") {
     return response.status(401).send({ error: 'token missing or invalid' })
   }
 
@@ -66,6 +75,10 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.message === 'blog does not exist') {
     return response.status(404).send({ error: 'blog does not exist' })
+  }
+
+  if (error.message === 'Year must be between 1991 and current year') {
+    return response.status(400).send({ error: 'Year must be between 1991 and current year' })
   }
 
   if (error.name === 'SequelizeUniqueConstraintError') {

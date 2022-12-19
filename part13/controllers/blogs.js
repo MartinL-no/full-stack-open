@@ -2,7 +2,7 @@ const router = require('express').Router()
 const sequelize = require('sequelize')
 const { Op } = require('sequelize')
 
-const { userExtractor, blogFinder } = require('../util/middleware')
+const { tokenExtractor, userExtractor, blogFinder } = require('../util/middleware')
 const { Blog, User } = require('../models')
 
 router.get('/', async (req, res) => {
@@ -18,18 +18,28 @@ router.get('/', async (req, res) => {
   }
 
   const blogs =  await Blog.findAll({
-    include: {
-      model: User,
-      attributes: ['id', 'username', 'name']
-    },
+    attributes: { exclude: ['userId'] },
+    include: [
+      {
+        model: User,
+        attributes: ['id', 'username', 'name']
+      },
+    ],
     where,
     order: [['likes', 'DESC']]
   })
   res.json(blogs)
 })
 
-router.post('/', userExtractor, async (req, res) => {
-  const blog = await Blog.create({ ...req.body, userId: req.user.id})
+router.post('/', tokenExtractor, userExtractor, async (req, res) => {
+  const body = req.body
+  const currentYear = new Date().getFullYear()
+
+  if (body.year < 1991 || body.year > currentYear) {
+    throw new Error('Year must be between 1991 and current year')
+  }
+
+  const blog = await Blog.create({ ...body, userId: req.user.id})
   return res.json(blog)
 })
 

@@ -8,11 +8,10 @@ User.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
   username: {
     type: DataTypes.STRING,
-    primaryKey: true,
     unique: true,
     allowNull: false,
     validate:{
@@ -29,6 +28,7 @@ User.init({
   },
 }, {
   sequelize,
+  timestamps: true,
   underscored: true,
   modelName: 'user'
 })
