@@ -3,14 +3,15 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const { SECRET } = require('../util/config')
-const User = require('../models/user')
+const { User, Sessions } = require('../models')
 
 router.post('/', async (req, res) => {
   const body = req.body
 
   const user = await User.findOne({
     where: {
-      username: body.username
+      username: body.username,
+      disabled: false
     }
   })
 
@@ -28,6 +29,13 @@ router.post('/', async (req, res) => {
   }
 
   const token = jwt.sign(userForToken, SECRET)
+
+  await Sessions.create({
+    token,
+    userId: user.id
+  })
+
+  console.log(Sessions.findAll())
 
   res.status(200).send({
       token,

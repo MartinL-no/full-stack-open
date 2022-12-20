@@ -1,24 +1,49 @@
 const jwt = require('jsonwebtoken')
 
-const { User, Blog } = require('../models')
+const { SECRET } = require('./config')
+const { User, Blog, Sessions } = require('../models')
 
-const tokenExtractor = (request, response, next) => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-      request.token = authorization.substring(7)
-    }
+const authenticate = async (req, res, next) => {
+  let token
+  const authorization = req.get('authorization')
 
-  next()
-}
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    token = authorization.substring(7)
+  } else {
+    throw new Error('invalid token')
+  }
 
-const userExtractor = async (request, response, next) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  const user = await User.findOne({ where: { username: decodedToken.username }})
+  const session = await Sessions.findOne({ where: { token } })
   
-  request.user = user
+  if (session === null) {
+    throw new Error('active session not found')
+  }
 
+  const decodedToken = jwt.verify(token, SECRET)
+  const user = await User.findByPk(decodedToken.id)
+
+  req.user = user
+  
   next()
 }
+
+// const tokenExtractor = (req, res, next) => {
+//     const authorization = req.get('authorization')
+//     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+//       req.token = authorization.substring(7)
+//     }
+
+//   next()
+// }
+
+// const userExtractor = async (req, res, next) => {
+//   const decodedToken = jwt.verify(req.token, SECRET)
+//   const user = await User.findOne({ where: { username: decodedToken.username }})
+  
+//   req.user = user
+
+//   next()
+// }
 
 const blogFinder = async (req, res, next) => {
   req.blog = await Blog.findByPk(req.params.id)
@@ -81,6 +106,10 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).send({ error: 'Year must be between 1991 and current year' })
   }
 
+  if (error.message === 'active session not found') {
+    return response.status(400).send({ error: 'active session not found' })
+  }
+
   if (error.name === 'SequelizeUniqueConstraintError') {
     const sequelizeUniqueConstraintErrors = error.errors.reduce((acc, e) => acc += `${e.message} `, '')
 
@@ -98,4 +127,4 @@ const errorHandler = (error, request, response, next) => {
   next()
 }
 
-module.exports = { tokenExtractor, userExtractor, blogFinder, errorHandler }
+module.exports = { authenticate, blogFinder, errorHandler }

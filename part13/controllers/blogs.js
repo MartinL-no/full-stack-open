@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const { Op } = require('sequelize')
 
-const { tokenExtractor, userExtractor, blogFinder } = require('../util/middleware')
+const { authenticate, blogFinder } = require('../util/middleware')
 const { Blog, User } = require('../models')
 
 router.get('/', async (req, res) => {
@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
   res.json(blogs)
 })
 
-router.post('/', tokenExtractor, userExtractor, async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
   const body = req.body
   const currentYear = new Date().getFullYear()
 
@@ -65,7 +65,7 @@ router.put('/:id', blogFinder, async (req, res) => {
   return res.json({ likes: req.blog.likes })
 })
 
-router.delete('/:id', blogFinder, userExtractor, async (req, res) => {
+router.delete('/:id', authenticate, blogFinder, async (req, res) => {
   if (req.blog && req.user.id === req.blog.userId) {
     await req.blog.destroy()
     res.status(204).end()

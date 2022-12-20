@@ -25,12 +25,22 @@ User.init({
   passwordHash: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  disabled: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
   }
 }, {
   sequelize,
   timestamps: true,
   underscored: true,
-  modelName: 'user'
+  modelName: 'user',
+  defaultScope: {
+    where: {
+      disabled: false
+    }
+  }
 })
 
 module.exports = User

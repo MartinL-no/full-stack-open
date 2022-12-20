@@ -21,6 +21,7 @@ module.exports = {
       read: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+        allowNull: false
       },
     })
   },

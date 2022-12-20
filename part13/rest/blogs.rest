@@ -4,7 +4,7 @@ GET http://localhost:3001/api/blogs
 ### Create a blog
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZHVzZXJAZ21haWwuY29tIiwiaWQiOjIsImlhdCI6MTY3MTQ4OTIxMH0.LLcGnyEw18JnCpqWbeP0Vhw32nmd6QXtYA-6l06wSKs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTY3MTU1ODM3NX0.knbwUqCEpJ8sQsOWR2fClOkAx8K6MJ29mcCizKwmCvc
 
 {
   "author": "second user blog post",
@@ -13,3 +13,7 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY
   "likes": 20,
   "year": 2018
 }
+
+### Delete a blog
+DELETE http://localhost:3001/api/blogs/1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTY3MTU1ODM3NX0.knbwUqCEpJ8sQsOWR2fClOkAx8K6MJ29mcCizKwmCvc

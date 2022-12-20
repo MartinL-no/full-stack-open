@@ -5,14 +5,24 @@ GET http://localhost:3001/api/users
 GET http://localhost:3001/api/users/1
 
 ### Get single user with blogs that have been read
-GET http://localhost:3001/api/users/1
+GET http://localhost:3001/api/users/1?read=true
 
 ### Create a user
 POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-  "username": "seconduser@gmail.com",
-  "name": "second user",
+  "username": "user@gmail.com",
+  "name": "user",
   "password": "password"
+}
+
+### Change username
+PUT http://localhost:3001/api/users/user@gmail.com
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTY3MTU1ODM3NX0.knbwUqCEpJ8sQsOWR2fClOkAx8K6MJ29mcCizKwmCvc
+
+
+{
+  "username": "user2@gmail.com"
 }

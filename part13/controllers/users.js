@@ -2,7 +2,7 @@ const router = require('express').Router()
 const { Op } = require('sequelize')
 const bcrypt = require('bcrypt')
 
-const { userExtractor } = require('../util/middleware')
+const { authenticate } = require('../util/middleware')
 const { User, Blog } = require('../models')
 
 router.get('/', async (req, res) => {
@@ -68,7 +68,7 @@ router.post('/', async (req, res) => {
   })
 })
 
-router.put('/:username', userExtractor, async (req, res) => {
+router.put('/:username', authenticate, async (req, res) => {
   const body = req.body
   const user = req.user
 
