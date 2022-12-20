@@ -1,7 +1,17 @@
+### Login as regular user
 POST http://localhost:3001/api/login
 Content-Type: application/json
 
 {
   "username": "user@gmail.com",
+  "password": "password"
+}
+
+### Login as admin
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+  "username": "seconduser@gmail.com",
   "password": "password"
 }

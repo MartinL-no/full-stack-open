@@ -1,43 +1,50 @@
 const router = require('express').Router()
+const { Op } = require('sequelize')
 const bcrypt = require('bcrypt')
 
 const { userExtractor } = require('../util/middleware')
-const { User, Blog, ReadingLists } = require('../models')
+const { User, Blog } = require('../models')
 
 router.get('/', async (req, res) => {
   const users = await User.findAll({
-    include: 
-      [
-        {
-          model: Blog
-        },
-        {
-          model: Blog,
-          as: 'readings',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
-          through: {
-            attributes: []
-          }
-        }
-      ],
     attributes: { exclude: ['passwordHash', 'createdAt', 'updatedAt'] },
+    include: {
+      model: Blog,
+      attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
+    },
   })
 
   res.json(users)
 })
 
 router.get('/:id', async (req, res) => {
+  let read = {
+    [Op.in]: [true, false]
+  }
+
+  if ( req.query.read ) {
+    read = req.query.read === "true"
+  }
+
   const user = await User.findByPk(req.params.id, {
     attributes: { exclude: ['id','passwordHash','createdAt','updatedAt'] },
-      include:
-        {
-          model: Blog,
-          as: 'readings',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
-          through: {
-            attributes: ['read', 'id']
-          },
+    include: [
+      {
+        model: Blog,
+        attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
+      },
+      {
+        model: Blog,
+        as: 'readings',
+        attributes: { exclude: ['userId','createdAt','updatedAt'] },
+        through: {
+          attributes: ['read','id'],
+          where: {
+            read
+          }
         }
+      }
+    ]
   })
 
   res.json(user)
