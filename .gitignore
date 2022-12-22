@@ -20,3 +20,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 *.aof
+part6/.DS_Store
+part7/bloglist/.DS_Store
+part9/.DS_Store
+part9/patientor/.DS_Store
