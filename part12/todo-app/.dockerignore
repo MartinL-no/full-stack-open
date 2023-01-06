@@ -1,0 +1,11 @@
+**/.dockerignore
+**/.gitignore
+*/node_modules
+**/Dockerfile
+**/dev.Dockerfile
+**/docker-compose*.dev
+**/README.md
+
+# db folders
+*/mongo_data
+*/redis_data
