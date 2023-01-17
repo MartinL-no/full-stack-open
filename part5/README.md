@@ -28,12 +28,12 @@ From working on this project I learnt about:
 - App requires the user to login which is implemented using JSON web token in the front/backend
 
 - The user can login, create a blog, like a blog as well as delete their own blogs
-
+<br /><br />
 
 ## Initializing frontend
 
 See [here](https://github.com/MartinL-no/full-stack-open/tree/main/part5/bloglist-frontend)
-
+<br /><br />
 
 ## Initializing backend
 
