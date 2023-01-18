@@ -1,70 +1,74 @@
-# Getting Started with Create React App
+# Redux Anecdotes App <br />
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+I created this app as an assignment for the [Full Stack Open](https://fullstackopen.com/en/) course.
 
-In the project directory, you can run:
+It is a React frontend with Redux state management, a simple backend is provided using [json-server](https://www.npmjs.com/package/json-server).
 
-### `npm start`
+From creating the project I learnt about:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Implementing Redux state management in a React application**
+- **The more modern version of Redux (hook API) and working with stores, reducers and action creators**
+- **Creating forms with Redux state management**
+- **Implementing server communication that works with Redux**
+- **Associated tooling such as [Redux Toolkit](https://redux-toolkit.js.org/), [Redux Thunk](https://github.com/reduxjs/redux-thunk), [https://react-redux.js.org/](https://react-redux.js.org/) & [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)**
+- **Working with older Redux code that uses the connect function**
+- **Creating code that doesn't cause side-effects**
+- **Code structure, separation of concerns and the concept of presentational vs container components in Redux apps**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### [LIVE LINK](https://redux-anecdotes.netlify.app/) <br /><br />
 
-### `npm run build`
+## Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- The app consist of one page
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- The user can add, filter and like anecdotes
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- State is managed using Redux, mainly using the hook API ([example](https://github.com/MartinL-no/full-stack-open/blob/main/part6/redux-anecdotes/src/reducers/anecdoteReducer.js)) with one [component](https://github.com/MartinL-no/full-stack-open/blob/main/part6/redux-anecdotes/src/components/AnecdoteForm.js) using the connect function for demonstration purposes
 
-### `npm run eject`
+- When the user adds or votes for an anecdote, a notification is shown at the top of the screen for a short amount of time
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Communication with the server is imlpemented using the axios HTTP client and async action creators
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Tech Used / Dependencies
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- React App bootstrapped with CRA
 
-## Learn More
+- [Redux](https://redux.js.org/) state management
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- [Redux Toolkit](https://redux-toolkit.js.org/) toolset for efficient Redux development
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [Axios](https://github.com/axios/axios) HTTP client
 
-### Code Splitting
+- [Redux Thunk](https://github.com/reduxjs/redux-thunk) middleware
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- [Eslint](https://eslint.org/) for linting
 
-### Analyzing the Bundle Size
+- [Json-server](https://www.npmjs.com/package/json-server) backend server for prototyping
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- [npm-run-all](https://www.npmjs.com/package/npm-run-all) CLI tool for running multiple scripts
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Install
 
-### Advanced Configuration
+```sh
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```sh
+npm start
+```
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Run backend server
+
+```sh
+npm run start:server
+```
