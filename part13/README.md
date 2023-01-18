@@ -26,7 +26,7 @@ From creating it I learnt about:
 
 - [bcrypt](https://www.npmjs.com/package/bcrypt) password hashing
 
-- [dotenv]([https://www.npmjs.com/package/cross-env](https://www.npmjs.com/package/dotenv)) environment middleware enabler
+- [dotenv]([https://www.npmjs.com/package/cross-env](https://www.npmjs.com/package/dotenv) environment middleware enabler
 
 - [express-async-errors](https://www.npmjs.com/package/express-async-errors) middleware error handler
 
