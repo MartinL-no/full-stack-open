@@ -9,10 +9,10 @@ It is a React frontend with Redux state management, a simple backend is provided
 From creating the project I learnt about:
 
 - **Implementing Redux state management in a React application**
-- **The more modern version of Redux (hook API) and working with stores, reducers and action creators**
+- **Modern Redux (hook API) and working with stores, reducers and action creators**
 - **Creating forms with Redux state management**
 - **Implementing server communication that works with Redux**
-- **Associated tooling such as [Redux Toolkit](https://redux-toolkit.js.org/), [Redux Thunk](https://github.com/reduxjs/redux-thunk), [https://react-redux.js.org/](https://react-redux.js.org/) & [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)**
+- **Associated tooling such as [Redux Toolkit](https://redux-toolkit.js.org/), [Redux Thunk](https://github.com/reduxjs/redux-thunk), [React Redux](https://react-redux.js.org/) & [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)**
 - **Working with older Redux code that uses the connect function**
 - **Creating code that doesn't cause side-effects**
 - **Code structure, separation of concerns and the concept of presentational vs container components in Redux apps**
@@ -43,6 +43,8 @@ From creating the project I learnt about:
 - [Redux Toolkit](https://redux-toolkit.js.org/) toolset for efficient Redux development
 
 - [Axios](https://github.com/axios/axios) HTTP client
+
+- [React Redux](https://react-redux.js.org/) bindings
 
 - [Redux Thunk](https://github.com/reduxjs/redux-thunk) middleware
 
